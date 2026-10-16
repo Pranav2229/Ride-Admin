@@ -1,0 +1,114 @@
+
+/* ========================================
+   RIDEBUDDY ADMIN LAYOUT
+======================================== */
+
+.admin-layout {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background: #f3f6fb;
+  color: #172b40;
+
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+/* ========================================
+   MAIN AREA
+======================================== */
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #f3f6fb;
+}
+
+/* ========================================
+   PAGE CONTENT
+======================================== */
+
+.admin-content {
+  flex: 1;
+  min-width: 0;
+
+  padding: 20px 22px 26px;
+
+  background: #f3f6fb;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+}
+
+/* Keep content sizing predictable */
+
+.admin-content * {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+.admin-content {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2e0 #f3f6fb;
+}
+
+.admin-content::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.admin-content::-webkit-scrollbar-track {
+  background: #f3f6fb;
+}
+
+.admin-content::-webkit-scrollbar-thumb {
+  background: #c7d2e0;
+  border-radius: 10px;
+}
+
+.admin-content::-webkit-scrollbar-thumb:hover {
+  background: #9eafc2;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1024px) {
+  .admin-content {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    min-height: 100vh;
+  }
+
+  .admin-main {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .admin-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content {
+    padding: 12px 10px 20px;
+  }
+}

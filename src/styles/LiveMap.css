@@ -1,0 +1,690 @@
+/* ========================================
+   LIVE MAP CARD
+======================================== */
+
+.live-map-card {
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8ef;
+
+  border-radius: 9px;
+
+  overflow: hidden;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.live-map-header {
+  min-height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 14px;
+
+  border-bottom: 1px solid #edf0f3;
+}
+
+.live-map-header h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.live-map-header p {
+  margin-top: 3px;
+
+  color: #66758c;
+
+  font-size: 11px;
+}
+
+.live-map-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+/* ========================================
+   LIVE STATUS
+======================================== */
+
+.live-status {
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border-radius: 18px;
+
+  background: #eaf8f1;
+
+  border: 1px solid #d6f0e3;
+
+  color: #15965a;
+
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: #18ad69;
+}
+
+/* ========================================
+   REFRESH
+======================================== */
+
+.map-refresh-button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e2e7ed;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #253247;
+}
+
+.map-refresh-button:hover {
+  background: #f5f7fa;
+}
+
+/* ========================================
+   MAP CONTAINER
+======================================== */
+
+.map-container {
+  width: 100%;
+
+  height: 350px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.map-background {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      115deg,
+      #eaf1e7 0%,
+      #f6f6ed 28%,
+      #eef2e7 54%,
+      #f8f6e9 100%
+    );
+}
+
+/* ========================================
+   MAP GRID
+======================================== */
+
+.map-background::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -100px;
+
+  background-image:
+    linear-gradient(
+      25deg,
+      transparent 48%,
+      rgba(255, 255, 255, 0.95) 49%,
+      rgba(255, 255, 255, 0.95) 51%,
+      transparent 52%
+    ),
+    linear-gradient(
+      105deg,
+      transparent 48%,
+      rgba(255, 255, 255, 0.8) 49%,
+      rgba(255, 255, 255, 0.8) 51%,
+      transparent 52%
+    );
+
+  background-size:
+    95px 75px,
+    120px 95px;
+
+  opacity: 0.75;
+}
+
+/* ========================================
+   ROADS
+======================================== */
+
+.map-road {
+  position: absolute;
+
+  height: 5px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  box-shadow:
+    0 1px 1px rgba(100, 120, 100, 0.08);
+
+  transform-origin: center;
+}
+
+.road-1 {
+  width: 120%;
+
+  left: -10%;
+  top: 28%;
+
+  transform: rotate(-13deg);
+}
+
+.road-2 {
+  width: 115%;
+
+  left: -7%;
+  top: 60%;
+
+  transform: rotate(8deg);
+}
+
+.road-3 {
+  width: 90%;
+
+  left: 7%;
+  top: 45%;
+
+  transform: rotate(37deg);
+}
+
+.road-4 {
+  width: 85%;
+
+  left: 18%;
+  top: 69%;
+
+  transform: rotate(-35deg);
+}
+
+.road-5 {
+  width: 80%;
+
+  left: -10%;
+  top: 82%;
+
+  transform: rotate(-4deg);
+}
+
+/* ========================================
+   RIVER
+======================================== */
+
+.map-river {
+  position: absolute;
+
+  width: 130%;
+  height: 70px;
+
+  left: -15%;
+  top: 48%;
+
+  background:
+    rgba(167, 211, 237, 0.7);
+
+  border-radius: 50%;
+
+  transform:
+    rotate(11deg);
+
+  filter: blur(1px);
+}
+
+/* ========================================
+   AREA LABELS
+======================================== */
+
+.map-label {
+  position: absolute;
+
+  z-index: 3;
+
+  color: #68756b;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.4px;
+}
+
+.label-baner {
+  left: 24%;
+  top: 17%;
+}
+
+.label-aundh {
+  left: 40%;
+  top: 17%;
+}
+
+.label-kothrud {
+  left: 20%;
+  top: 64%;
+}
+
+.label-hadapsar {
+  right: 20%;
+  top: 66%;
+}
+
+.map-city {
+  position: absolute;
+
+  z-index: 3;
+
+  left: 53%;
+  top: 43%;
+
+  color: #263333;
+
+  font-size: 21px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
+}
+
+/* ========================================
+   DRIVER MARKERS
+======================================== */
+
+.driver-map-marker {
+  position: absolute;
+
+  z-index: 6;
+
+  width: 25px;
+  height: 25px;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffc400;
+
+  border: 3px solid #ffffff;
+
+  border-radius: 50%;
+
+  color: #18212d;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.driver-map-marker svg {
+  fill: #18212d;
+}
+
+/* ========================================
+   CUSTOMER MARKER
+======================================== */
+
+.customer-map-marker {
+  position: absolute;
+
+  z-index: 7;
+
+  left: 55%;
+  top: 39%;
+
+  width: 29px;
+  height: 29px;
+
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #2476dc;
+
+  border: 3px solid #ffffff;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   DESTINATION
+======================================== */
+
+.destination-map-marker {
+  position: absolute;
+
+  z-index: 8;
+
+  left: 32%;
+  top: 34%;
+
+  color: #ef4444;
+
+  filter:
+    drop-shadow(
+      0 2px 2px rgba(0, 0, 0, 0.15)
+    );
+}
+
+.destination-map-marker svg {
+  fill: #ef4444;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}
+
+/* ========================================
+   RIDE ROUTE
+======================================== */
+
+.ride-route {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 32.5%;
+  top: 35%;
+
+  width: 25%;
+
+  height: 100px;
+
+  border-left: 3px solid #2779e8;
+
+  border-bottom: 3px solid #2779e8;
+
+  border-radius: 0 0 0 60px;
+
+  transform:
+    rotate(-16deg);
+}
+
+/* ========================================
+   DRIVER INFO
+======================================== */
+
+.driver-map-info {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 52%;
+  top: 17%;
+
+  min-width: 118px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 9px 11px;
+
+  background: #ffffff;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 4px 16px rgba(20, 40, 60, 0.15);
+
+  transform:
+    translateX(-15%);
+}
+
+.driver-avatar {
+  width: 31px;
+  height: 31px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dcecff;
+
+  color: #1768d4;
+}
+
+.driver-map-info span {
+  display: block;
+
+  color: #596980;
+
+  font-size: 9px;
+}
+
+.driver-map-info strong {
+  display: block;
+
+  margin-top: 1px;
+
+  color: #182235;
+
+  font-size: 11px;
+}
+
+.driver-map-info small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #63718a;
+
+  font-size: 9px;
+}
+
+/* ========================================
+   ZOOM
+======================================== */
+
+.map-zoom-controls {
+  position: absolute;
+
+  z-index: 15;
+
+  right: 13px;
+  bottom: 13px;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 7px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.13);
+}
+
+.map-zoom-controls button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  background: #ffffff;
+
+  color: #263447;
+}
+
+.map-zoom-controls button + button {
+  border-top: 1px solid #e4e7eb;
+}
+
+.map-zoom-controls button:hover {
+  background: #f5f7fa;
+}
+
+/* ========================================
+   LEGEND
+======================================== */
+
+.map-legend {
+  position: absolute;
+
+  z-index: 15;
+
+  left: 13px;
+  bottom: 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 5px 8px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  border-radius: 6px;
+
+  backdrop-filter: blur(4px);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #4e5c71;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.legend-driver,
+.legend-customer,
+.legend-destination {
+  width: 16px;
+  height: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+.legend-driver {
+  background: #ffc400;
+  color: #1d2630;
+}
+
+.legend-customer {
+  background: #287be0;
+  color: #ffffff;
+}
+
+.legend-destination {
+  color: #ef4444;
+}
+
+.legend-active {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: #20ad68;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 700px) {
+  .map-container {
+    height: 300px;
+  }
+
+  .map-legend {
+    gap: 8px;
+  }
+
+  .legend-item {
+    font-size: 8px;
+  }
+
+  .driver-map-info {
+    left: 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  .live-map-header {
+    align-items: flex-start;
+  }
+
+  .live-map-header p {
+    max-width: 200px;
+    line-height: 1.4;
+  }
+
+  .live-status {
+    padding: 0 9px;
+  }
+
+  .map-legend {
+    gap: 5px;
+    padding: 4px;
+  }
+
+  .legend-item {
+    font-size: 7px;
+  }
+
+  .legend-item:nth-child(2) {
+    display: none;
+  }
+}

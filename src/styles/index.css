@@ -1,0 +1,190 @@
+
+/* ========================================
+   RIDEBUDDY ADMIN - GLOBAL STYLES
+======================================== */
+
+:root {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  color: #172b40;
+  background: #f3f6fb;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --rb-navy: #071c2d;
+  --rb-navy-light: #102b40;
+  --rb-yellow: #ffd21a;
+  --rb-yellow-hover: #f2bf00;
+
+  --rb-page-bg: #f3f6fb;
+  --rb-card-bg: #ffffff;
+  --rb-text: #172b40;
+  --rb-muted: #738398;
+  --rb-border: #dce5ef;
+
+  --rb-green: #16a36a;
+  --rb-red: #e5484d;
+  --rb-blue: #3478d4;
+
+  --rb-radius: 8px;
+  --rb-card-shadow: 0 2px 8px rgba(24, 49, 75, 0.04);
+}
+
+/* ========================================
+   RESET
+======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  min-width: 320px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+
+  background: var(--rb-page-bg);
+  color: var(--rb-text);
+}
+
+/* ========================================
+   ROOT
+======================================== */
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ========================================
+   TYPOGRAPHY
+======================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: inherit;
+  font-family: inherit;
+  line-height: 1.35;
+}
+
+p {
+  overflow-wrap: break-word;
+}
+
+small {
+  font-size: 11px;
+}
+
+/* ========================================
+   FORM ELEMENTS
+======================================== */
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+input,
+select,
+textarea {
+  color: var(--rb-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b5;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--rb-blue);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   LINKS AND LISTS
+======================================== */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* ========================================
+   IMAGES
+======================================== */
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ========================================
+   SELECTION
+======================================== */
+
+::selection {
+  background: rgba(255, 210, 26, 0.45);
+  color: #071c2d;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2e0 #f3f6fb;
+}
+
+body::-webkit-scrollbar {
+  width: 7px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f3f6fb;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #c7d2e0;
+  border-radius: 10px;
+}
