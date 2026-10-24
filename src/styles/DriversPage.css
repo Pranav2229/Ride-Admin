@@ -607,3 +607,97 @@
     margin-left: 16px;
   }
 }
+
+
+.driver-earnings-summary {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.driver-earnings-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.driver-earnings-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #fff7cc;
+  color: #8a6500;
+}
+
+.driver-earnings-heading h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.driver-earnings-heading p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.driver-earnings-heading button {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.driver-earnings-heading button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.driver-earnings-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.driver-earnings-values > div {
+  padding: 15px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.driver-earnings-values span {
+  display: block;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.driver-earnings-values strong {
+  font-size: 22px;
+  color: #111827;
+}
+
+.driver-earnings-error {
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .driver-earnings-heading {
+    flex-wrap: wrap;
+  }
+
+  .driver-earnings-heading button {
+    margin-left: 0;
+  }
+}
