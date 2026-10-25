@@ -1,17 +1,27 @@
 
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   Bell,
   ChevronDown,
+  LogOut,
 } from "lucide-react";
 
 import "../../styles/Topbar.css";
 
 function Topbar() {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    sessionStorage.removeItem("adminAuthenticated");
+    sessionStorage.removeItem("adminToken");
+    navigate("/login", { replace: true });
+  }
+
   return (
     <header className="topbar">
-      {/* Search */}
       <div className="topbar-search">
         <Search size={15} />
 
@@ -24,37 +34,43 @@ function Topbar() {
         <span className="search-shortcut">⌘</span>
       </div>
 
-      {/* Right Section */}
       <div className="topbar-right">
-        {/* Notifications */}
         <button
           type="button"
           className="notification-button"
           aria-label="Notifications"
         >
           <Bell size={17} />
-
           <span className="notification-count">3</span>
         </button>
 
-        {/* Admin Profile */}
-        <button
-          type="button"
-          className="admin-profile"
-          aria-label="Admin profile"
-        >
-          <div className="admin-avatar">A</div>
+        <div className="admin-profile-wrapper">
+          <button
+            type="button"
+            className="admin-profile"
+            aria-expanded={profileOpen}
+            aria-label="Admin profile menu"
+            onClick={() => setProfileOpen((open) => !open)}
+          >
+            <div className="admin-avatar">A</div>
 
-          <div className="admin-info">
-            <h4>Admin</h4>
-            <span>Super Admin</span>
-          </div>
+            <div className="admin-info">
+              <h4>Admin</h4>
+              <span>Super Admin</span>
+            </div>
 
-          <ChevronDown
-            className="admin-chevron"
-            size={14}
-          />
-        </button>
+            <ChevronDown className="admin-chevron" size={14} />
+          </button>
+
+          {profileOpen && (
+            <div className="admin-profile-menu">
+              <button type="button" onClick={handleLogout}>
+                <LogOut size={16} />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

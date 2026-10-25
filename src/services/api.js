@@ -1,8 +1,13 @@
 
 const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:5000/api/general"
+  "https://ride-api-jgh7.onrender.com/api/general"
 ).replace(/\/+$/, "");
+
+// const API_BASE_URL = (
+//   import.meta.env.VITE_API_BASE_URL ||
+//   "/api/general"
+// ).replace(/\/+$/, "");
 
 export async function apiRequest(
   endpoint,
@@ -91,4 +96,50 @@ export const driverApi = {
 
   getWallet: (token) =>
     apiRequest("driver/get_driver_wallet", { token }),
+};
+
+
+export const liveRideApi = {
+  getNearbyDrivers: (latitude, longitude, radius_km) =>
+    apiRequest("user/nearby_drivers", {
+      method: "POST",
+      body: {
+        latitude: String(latitude),
+        longitude: String(longitude),
+        radius_km: String(radius_km),
+      },
+    }),
+};
+
+// // ✅ Admin API added for Admin Panel pages
+// export const adminApi = {
+//   getAllUsers: (token) =>
+//     apiRequest("admin/get_all_users", { token }),
+
+//   getAllDrivers: (token) =>
+//     apiRequest("admin/get_all_drivers", { token }),
+
+//   getDriverDocuments: (token) =>
+//     apiRequest("admin/driver_documents", { token }),
+
+//   getDriverStatus: (token) =>
+//     apiRequest("admin/drivers_status", { token }),
+// };
+
+
+
+export const adminApi = {
+  // Admin Login
+  login: (credentials) =>
+    apiRequest("admin/login", {
+      method: "POST",
+      body: credentials,
+    }),
+
+  // Admin Dashboard Overview
+  getDashboardOverview: (token) =>
+    apiRequest("admin/dashboard/overview", {
+      method: "GET",
+      token,
+    }),
 };
