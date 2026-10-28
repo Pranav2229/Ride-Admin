@@ -884,3 +884,43 @@
     width: 100%;
   }
 }
+
+
+/* ===== Back button ===== */
+.documents-back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; margin-bottom: 12px;
+  background: #fff; border: 1px solid #E5E7EB;
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  color: #374151; cursor: pointer;
+}
+.documents-back-btn:hover { background: #F9FAFB; }
+
+/* ===== Single-driver mode ===== */
+.documents-main-layout.single-mode {
+  grid-template-columns: 1fr;
+}
+.documents-main-layout.single-mode .documents-profile-panel {
+  max-width: 900px;
+}
+
+/* ===== Reject reason chip in doc card ===== */
+.doc-reject-reason {
+  background: #FEE2E2; color: #991B1B;
+  padding: 6px 8px; border-radius: 6px; font-size: 11px;
+  margin-bottom: 6px;
+}
+
+/* ===== Card actions row ===== */
+.document-card-actions {
+  display: flex; gap: 6px; margin-top: 4px;
+}
+
+/* ===== Reject modal textarea ===== */
+.documents-review-modal textarea {
+  width: 100%; padding: 10px; border: 1px solid #E5E7EB;
+  border-radius: 8px; font-family: inherit; font-size: 13px;
+  resize: vertical; outline: none;
+}
+.documents-review-modal textarea:focus { border-color: #F59E0B; }
+.documents-modal-hint { font-size: 12px; color: #6B7280; margin: 0 0 12px; }
