@@ -558,6 +558,36 @@
   line-height: 1.6;
 }
 
+/* Loading spinner */
+.kyc-spin {
+  animation: kyc-spin 1s linear infinite;
+}
+
+@keyframes kyc-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Empty state (used in the sidebar) */
+.kyc-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.kyc-empty-state strong {
+  font-size: 15px;
+  color: #111827;
+}
+
+.kyc-empty-state span {
+  font-size: 13px;
+}
+
 /* Responsive */
 
 @media (max-width: 1200px) {
