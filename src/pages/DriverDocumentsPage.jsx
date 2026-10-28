@@ -1220,18 +1220,598 @@
 
 
 
+// import React, { useCallback, useEffect, useMemo, useState } from "react";
+// import {
+//   Search, FileText, CheckCircle2, Clock3, XCircle, UserRound, CarFront,
+//   CreditCard, MapPin, IdCard, Eye, RotateCcw, ShieldCheck, CalendarDays,
+//   X, Loader2, AlertCircle,
+// } from "lucide-react";
+
+// import { adminApi } from "../services/api";
+// import "../styles/DriverDocumentsPage.css";
+
+// // =====================================================
+// // TOKEN HELPER
+// // =====================================================
+// function getAdminToken() {
+//   return (
+//     localStorage.getItem("accessToken") ||
+//     localStorage.getItem("adminToken") ||
+//     sessionStorage.getItem("accessToken") ||
+//     sessionStorage.getItem("adminToken") ||
+//     null
+//   );
+// }
+
+// const TAB_TO_API = {
+//   "All Drivers": "ALL",
+//   Verified: "VERIFIED",
+//   Pending: "PENDING",
+//   Rejected: "REJECTED",
+// };
+
+// const STATUS_TO_DISPLAY = {
+//   VERIFIED: "Verified",
+//   PENDING: "Pending",
+//   REJECTED: "Rejected",
+//   APPROVED: "Verified",
+// };
+
+// function formatDate(dateStr) {
+//   if (!dateStr) return "—";
+//   try {
+//     return new Date(dateStr).toLocaleDateString("en-IN", {
+//       day: "2-digit",
+//       month: "short",
+//       year: "numeric",
+//     });
+//   } catch {
+//     return dateStr;
+//   }
+// }
+
+// const documentIcon = (type) => {
+//   if (type === "Driving License") return <IdCard size={19} />;
+//   if (type === "Address Proof") return <MapPin size={19} />;
+//   if (type === "Vehicle RC" || type === "Fitness Certificate" || type === "Taxi Permit") {
+//     return <CarFront size={19} />;
+//   }
+//   if (type === "PAN Card" || type === "Identity Card") return <CreditCard size={19} />;
+//   return <UserRound size={19} />;
+// };
+
+// function DriverDocumentsPage() {
+//   const [drivers, setDrivers] = useState([]);
+//   const [selectedId, setSelectedId] = useState(null);
+//   const [selectedDetail, setSelectedDetail] = useState(null);
+
+//   const [activeTab, setActiveTab] = useState("All Drivers");
+//   const [search, setSearch] = useState("");
+//   const [statusFilter, setStatusFilter] = useState("All Status");
+
+//   const [previewDocument, setPreviewDocument] = useState(null);
+//   const [message, setMessage] = useState("");
+//   const [error, setError] = useState("");
+
+//   const [loading, setLoading] = useState(false);
+//   const [loadingDetail, setLoadingDetail] = useState(false);
+//   const [actionLoading, setActionLoading] = useState(false);
+
+//   // ---------------------------------------------------
+//   // LOAD LIST
+//   // ---------------------------------------------------
+//   const loadList = useCallback(async (tab) => {
+//     const token = getAdminToken();
+//     if (!token) {
+//       setError("Not authenticated. Please login again.");
+//       return;
+//     }
+
+//     setLoading(true);
+//     setError("");
+//     try {
+//       const res = await adminApi.getDocumentsList(token, {
+//         filter: TAB_TO_API[tab] || "ALL",
+//       });
+
+//       if (res?.success) {
+//         setDrivers(res.data || []);
+//         if (res.data?.length > 0 && !selectedId) {
+//           setSelectedId(res.data[0].driver_id);
+//         }
+//       } else {
+//         setError(res?.message || "Failed to load list");
+//         setDrivers([]);
+//       }
+//     } catch (e) {
+//       console.error("loadList error:", e.message);
+//       setError(e.message || "Unable to load drivers");
+//       setDrivers([]);
+//     } finally {
+//       setLoading(false);
+//     }
+//   }, [selectedId]);
+
+//   // ---------------------------------------------------
+//   // LOAD DETAIL
+//   // ---------------------------------------------------
+//   const loadDetail = useCallback(async (driverId) => {
+//     const token = getAdminToken();
+//     if (!token || !driverId) return;
+
+//     setLoadingDetail(true);
+//     try {
+//       const res = await adminApi.getDriverDocuments(token, driverId);
+//       if (res?.success) {
+//         setSelectedDetail(res.data);
+//       } else {
+//         setSelectedDetail(null);
+//       }
+//     } catch (e) {
+//       console.error("loadDetail error:", e.message);
+//       setSelectedDetail(null);
+//     } finally {
+//       setLoadingDetail(false);
+//     }
+//   }, []);
+
+//   // ---------------------------------------------------
+//   // INITIAL + TAB CHANGE
+//   // ---------------------------------------------------
+//   useEffect(() => {
+//     loadList(activeTab);
+//   }, [activeTab, loadList]);
+
+//   useEffect(() => {
+//     if (selectedId) loadDetail(selectedId);
+//   }, [selectedId, loadDetail]);
+
+//   // ---------------------------------------------------
+//   // COUNTS
+//   // ---------------------------------------------------
+//   const counts = {
+//     "All Drivers": drivers.length,
+//     Verified: drivers.filter((d) => d.status === "VERIFIED").length,
+//     Pending: drivers.filter((d) => d.status === "PENDING").length,
+//     Rejected: drivers.filter((d) => d.status === "REJECTED").length,
+//   };
+
+//   // ---------------------------------------------------
+//   // FILTER (client-side within loaded tab)
+//   // ---------------------------------------------------
+//   const filteredDrivers = useMemo(() => {
+//     const query = search.trim().toLowerCase();
+//     if (!query) return drivers;
+//     return drivers.filter(
+//       (d) =>
+//         d.name?.toLowerCase().includes(query) ||
+//         d.phone?.toLowerCase().includes(query) ||
+//         String(d.driver_id).includes(query)
+//     );
+//   }, [drivers, search]);
+
+//   // ---------------------------------------------------
+//   // UPDATE DOCUMENT STATUS
+//   // ---------------------------------------------------
+//   const updateDocumentStatus = async (driverId, documentKey, newStatus, reason) => {
+//     const token = getAdminToken();
+//     if (!token) return setError("Not authenticated");
+
+//     setActionLoading(true);
+//     try {
+//       const res = await adminApi.updateDocumentStatus(
+//         token, driverId, documentKey, newStatus, reason
+//       );
+//       if (res?.success) {
+//         setMessage(`${documentKey} marked as ${newStatus.toLowerCase()}.`);
+//         setPreviewDocument(null);
+//         await Promise.all([loadList(activeTab), loadDetail(driverId)]);
+//       } else {
+//         setMessage(res?.message || "Update failed");
+//       }
+//     } catch (e) {
+//       console.error("updateDocumentStatus error:", e.message);
+//       setMessage(e.message || "Failed to update");
+//     } finally {
+//       setActionLoading(false);
+//     }
+//   };
+
+//   const handleReject = (driverId, documentKey) => {
+//     const reason = window.prompt("Enter rejection reason (min 5 characters):");
+//     if (!reason || reason.trim().length < 5) {
+//       setMessage("Rejection reason must be at least 5 characters.");
+//       return;
+//     }
+//     updateDocumentStatus(driverId, documentKey, "REJECTED", reason.trim());
+//   };
+
+//   const handleApprove = (driverId, documentKey) => {
+//     updateDocumentStatus(driverId, documentKey, "VERIFIED", null);
+//   };
+
+//   const resetFilters = () => {
+//     setSearch("");
+//     setStatusFilter("All Status");
+//     setActiveTab("All Drivers");
+//     setMessage("");
+//     setError("");
+//   };
+
+//   const selectedDriver = selectedDetail?.driver || null;
+//   const documents = selectedDetail?.documents || [];
+//   const docCounts = selectedDetail?.counts || { total: 0, verified: 0, pending: 0, rejected: 0 };
+
+//   // =====================================================
+//   // RENDER
+//   // =====================================================
+//   return (
+//     <div className="driver-documents-page">
+//       <div className="documents-page-header">
+//         <div>
+//           <span className="documents-eyebrow">DOCUMENT VERIFICATION</span>
+//           <h1>Driver Documents</h1>
+//           <p>View and verify driver documents and credentials.</p>
+//         </div>
+//         <div className="documents-header-icon">
+//           <ShieldCheck size={23} />
+//         </div>
+//       </div>
+
+//       {/* STATS */}
+//       <div className="documents-stats">
+//         <article className="documents-stat-card">
+//           <div className="documents-stat-icon yellow"><FileText size={20} /></div>
+//           <div>
+//             <span>Total Documents</span>
+//             <strong>{drivers.length * 8}</strong>
+//             <small>Across all listed drivers</small>
+//           </div>
+//         </article>
+//         <article className="documents-stat-card">
+//           <div className="documents-stat-icon green"><CheckCircle2 size={20} /></div>
+//           <div>
+//             <span>Verified Documents</span>
+//             <strong>{counts.Verified * 8}</strong>
+//             <small>Approved drivers</small>
+//           </div>
+//         </article>
+//         <article className="documents-stat-card">
+//           <div className="documents-stat-icon amber"><Clock3 size={20} /></div>
+//           <div>
+//             <span>Pending Documents</span>
+//             <strong>{counts.Pending * 8}</strong>
+//             <small>Waiting for review</small>
+//           </div>
+//         </article>
+//         <article className="documents-stat-card">
+//           <div className="documents-stat-icon red"><XCircle size={20} /></div>
+//           <div>
+//             <span>Rejected Documents</span>
+//             <strong>{counts.Rejected * 8}</strong>
+//             <small>Require attention</small>
+//           </div>
+//         </article>
+//       </div>
+
+//       <div className="documents-main-layout">
+//         {/* LEFT — LIST */}
+//         <section className="documents-list-panel">
+//           <div className="documents-tabs">
+//             {[
+//               ["All Drivers", counts["All Drivers"]],
+//               ["Verified", counts.Verified],
+//               ["Pending", counts.Pending],
+//               ["Rejected", counts.Rejected],
+//             ].map(([tab, count]) => (
+//               <button
+//                 key={tab}
+//                 type="button"
+//                 className={`documents-tab ${activeTab === tab ? "active" : ""}`}
+//                 onClick={() => setActiveTab(tab)}
+//               >
+//                 {tab} <span>{count}</span>
+//               </button>
+//             ))}
+//           </div>
+
+//           <div className="documents-toolbar">
+//             <label className="documents-search">
+//               <Search size={16} />
+//               <input
+//                 value={search}
+//                 onChange={(e) => setSearch(e.target.value)}
+//                 placeholder="Search by driver name, phone or ID..."
+//               />
+//             </label>
+//             <button
+//               type="button"
+//               className="documents-reset-button"
+//               onClick={resetFilters}
+//               title="Reset filters"
+//             >
+//               <RotateCcw size={15} /> <span>Reset</span>
+//             </button>
+//           </div>
+
+//           {message && (
+//             <div className="documents-message" role="status">
+//               <CheckCircle2 size={16} /> {message}
+//               <button onClick={() => setMessage("")}><X size={15} /></button>
+//             </div>
+//           )}
+
+//           {error && (
+//             <div className="documents-message" style={{ background: "#FEE2E2", color: "#991B1B" }}>
+//               <AlertCircle size={16} /> {error}
+//               <button onClick={() => setError("")}><X size={15} /></button>
+//             </div>
+//           )}
+
+//           <div className="documents-table-wrap">
+//             <table className="documents-table">
+//               <thead>
+//                 <tr>
+//                   <th>#</th>
+//                   <th>Driver</th>
+//                   <th>Phone Number</th>
+//                   <th>Documents</th>
+//                   <th>Verification Status</th>
+//                   <th>Action</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {loading ? (
+//                   <>
+//                     <tr>
+//                       <td colSpan={6} style={{ textAlign: "center", padding: 30 }}>
+//                         <Loader2 size={27} className="documents-spin" />
+//                         <strong>Loading…</strong>
+//                       </td>
+//                     </tr>
+//                   </>
+//                 ) : filteredDrivers.length === 0 ? (
+//                   <tr><td colSpan={6}>
+//                     <div className="documents-empty">
+//                       <FileText size={27} />
+//                       <strong>No matching drivers</strong>
+//                       <span>Try changing your search or filters.</span>
+//                     </div>
+//                   </td></tr>
+//                 ) : (
+//                   filteredDrivers.map((driver, index) => {
+//                     const displayStatus = STATUS_TO_DISPLAY[driver.status] || driver.status;
+//                     return (
+//                       <tr
+//                         key={driver.driver_id}
+//                         className={selectedId === driver.driver_id ? "selected" : ""}
+//                         onClick={() => setSelectedId(driver.driver_id)}
+//                       >
+//                         <td>{index + 1}</td>
+//                         <td>
+//                           <button
+//                             type="button"
+//                             className="documents-driver-cell"
+//                             onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}
+//                           >
+//                             <span className="documents-driver-avatar"><UserRound size={18} /></span>
+//                             <span>
+//                               <strong>{driver.name}</strong>
+//                               <small>#{driver.driver_id}</small>
+//                             </span>
+//                           </button>
+//                         </td>
+//                         <td>{driver.phone}</td>
+//                         <td>
+//                           <strong>{driver.documents_submitted || "0/8"}</strong>
+//                         </td>
+//                         <td>
+//                           <span className={`documents-status ${displayStatus.toLowerCase()}`}>
+//                             {displayStatus === "Verified" && <CheckCircle2 size={13} />}
+//                             {displayStatus === "Pending" && <Clock3 size={13} />}
+//                             {displayStatus === "Rejected" && <XCircle size={13} />}
+//                             {displayStatus}
+//                           </span>
+//                         </td>
+//                         <td>
+//                           <div className="documents-row-actions">
+//                             <button
+//                               type="button"
+//                               className="documents-view-button"
+//                               onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}
+//                             >
+//                               View
+//                             </button>
+//                           </div>
+//                         </td>
+//                       </tr>
+//                     );
+//                   })
+//                 )}
+//               </tbody>
+//             </table>
+//           </div>
+
+//           <div className="documents-table-footer">
+//             Showing {filteredDrivers.length} of {drivers.length} drivers
+//           </div>
+//         </section>
+
+//         {/* RIGHT — PROFILE + DOCUMENTS */}
+//         {selectedDriver && (
+//           <aside className="documents-profile-panel">
+//             <div className="documents-profile-heading">
+//               <div>
+//                 <h2>Driver Profile & Documents</h2>
+//                 <p>Review submitted credentials</p>
+//               </div>
+//             </div>
+
+//             <div className="documents-driver-summary">
+//               <div className="documents-profile-person">
+//                 <div className="documents-large-avatar"><UserRound size={30} /></div>
+//                 <div className="documents-profile-name">
+//                   <h3>{selectedDriver.name}</h3>
+//                   <p>{selectedDriver.phone}</p>
+//                 </div>
+//                 <span className={`documents-status ${(STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending").toLowerCase()}`}>
+//                   {STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending"}
+//                 </span>
+//               </div>
+
+//               <div className="documents-driver-details">
+//                 <div><FileText size={15} /><span><small>Driver ID</small><strong>#{selectedDriver.driver_id}</strong></span></div>
+//                 <div><CalendarDays size={15} /><span><small>Applied On</small><strong>{formatDate(selectedDriver.applied_on)}</strong></span></div>
+//               </div>
+//             </div>
+
+//             <div className="documents-section-title">
+//               <h3>Documents</h3>
+//               <span>{docCounts.verified}/{docCounts.total} Verified</span>
+//             </div>
+
+//             <div className="documents-card-grid">
+//               {loadingDetail ? (
+//                 <div style={{ padding: 30, textAlign: "center" }}>
+//                   <Loader2 size={27} className="documents-spin" />
+//                 </div>
+//               ) : (
+//                 documents.map((doc) => {
+//                   console.log("docdocdocdocdoc",doc);
+                  
+//                   const displayStatus = STATUS_TO_DISPLAY[doc.status] || "Pending";
+//                   return (
+//                     <article className="individual-document-card" key={doc.key}>
+//                       <div className="individual-document-heading">
+//                         <span className="individual-document-icon">{documentIcon(doc.type)}</span>
+//                         <strong>{doc.name}</strong>
+//                       </div>
+
+//                       <span className={`documents-status ${displayStatus.toLowerCase()}`}>
+//                         {displayStatus === "Verified" && <CheckCircle2 size={12} />}
+//                         {displayStatus === "Pending" && <Clock3 size={12} />}
+//                         {displayStatus === "Rejected" && <XCircle size={12} />}
+//                         {displayStatus}
+//                       </span>
+
+//                       <div className="document-placeholder">
+//                         {doc.url ? (
+//                           doc.url.toLowerCase().endsWith(".pdf") ? (
+//                             <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ color: "#2563EB" }}>
+//                               📄 Open PDF
+//                             </a>
+//                           ) : (
+//                             <img src={doc.url} alt={doc.name} style={{ maxWidth: "100%", maxHeight: 140, objectFit: "contain" }} />
+//                           )
+//                         ) : (
+//                           <>
+//                             <FileText size={29} />
+//                             <span>Not uploaded</span>
+//                           </>
+//                         )}
+//                       </div>
+
+//                       {doc.reason && (
+//                         <div style={{ background: "#FEE2E2", color: "#991B1B", padding: 6, borderRadius: 6, fontSize: 12, marginBottom: 6 }}>
+//                           Reason: {doc.reason}
+//                         </div>
+//                       )}
+
+//                       <div style={{ display: "flex", gap: 6 }}>
+//                         <button
+//                           type="button"
+//                           className="document-preview-button"
+//                           onClick={() => setPreviewDocument({ driverId: selectedDetail.driver.driver_id, document: doc })}
+//                         >
+//                           <Eye size={13} /> Preview
+//                         </button>
+//                       </div>
+//                     </article>
+//                   );
+//                 })
+//               )}
+//             </div>
+//           </aside>
+//         )}
+//       </div>
+
+//       {/* MODAL */}
+//       {previewDocument && (
+//         <div className="documents-modal-backdrop" onClick={() => setPreviewDocument(null)}>
+//           <section className="documents-review-modal" onClick={(e) => e.stopPropagation()}>
+//             <div className="documents-modal-header">
+//               <div>
+//                 <span>DOCUMENT REVIEW</span>
+//                 <h2>{previewDocument.document.name}</h2>
+//               </div>
+//               <button onClick={() => setPreviewDocument(null)}><X size={19} /></button>
+//             </div>
+
+//             <div className="documents-modal-preview">
+//               {previewDocument.document.url ? (
+//                 previewDocument.document.url.toLowerCase().endsWith(".pdf") ? (
+//                   <a href={previewDocument.document.url} target="_blank" rel="noopener noreferrer">
+//                     📄 Open PDF in new tab
+//                   </a>
+//                 ) : (
+//                   <img
+//                     src={previewDocument.document.url}
+//                     alt={previewDocument.document.name}
+//                     style={{ maxWidth: "100%", maxHeight: 400, objectFit: "contain" }}
+//                   />
+//                 )
+//               ) : (
+//                 <>
+//                   <FileText size={52} />
+//                   <strong>{previewDocument.document.name}</strong>
+//                   <span>No file uploaded</span>
+//                 </>
+//               )}
+//             </div>
+
+//             <div className="documents-modal-actions">
+//               <button
+//                 type="button"
+//                 className="documents-modal-secondary"
+//                 disabled={actionLoading}
+//                 onClick={() => handleReject(previewDocument.driverId, previewDocument.document.key)}
+//               >
+//                 <XCircle size={16} /> Reject
+//               </button>
+//               <button
+//                 type="button"
+//                 className="documents-modal-approve"
+//                 disabled={actionLoading}
+//                 onClick={() => handleApprove(previewDocument.driverId, previewDocument.document.key)}
+//               >
+//                 <CheckCircle2 size={16} /> Mark Verified
+//               </button>
+//             </div>
+//           </section>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default DriverDocumentsPage;
+
+
+
+
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import {
   Search, FileText, CheckCircle2, Clock3, XCircle, UserRound, CarFront,
   CreditCard, MapPin, IdCard, Eye, RotateCcw, ShieldCheck, CalendarDays,
-  X, Loader2, AlertCircle,
+  X, Loader2, AlertCircle, ArrowLeft,
 } from "lucide-react";
 
 import { adminApi } from "../services/api";
 import "../styles/DriverDocumentsPage.css";
 
 // =====================================================
-// TOKEN HELPER
+// TOKEN
 // =====================================================
 function getAdminToken() {
   return (
@@ -1261,35 +1841,35 @@ function formatDate(dateStr) {
   if (!dateStr) return "—";
   try {
     return new Date(dateStr).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
+      day: "2-digit", month: "short", year: "numeric",
     });
-  } catch {
-    return dateStr;
-  }
+  } catch { return dateStr; }
 }
 
 const documentIcon = (type) => {
   if (type === "Driving License") return <IdCard size={19} />;
   if (type === "Address Proof") return <MapPin size={19} />;
-  if (type === "Vehicle RC" || type === "Fitness Certificate" || type === "Taxi Permit") {
-    return <CarFront size={19} />;
-  }
-  if (type === "PAN Card" || type === "Identity Card") return <CreditCard size={19} />;
+  if (["Vehicle RC", "Fitness Certificate", "Taxi Permit"].includes(type)) return <CarFront size={19} />;
+  if (["PAN Card", "Identity Card"].includes(type)) return <CreditCard size={19} />;
   return <UserRound size={19} />;
 };
 
-function DriverDocumentsPage() {
-  const [drivers, setDrivers] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
-  const [selectedDetail, setSelectedDetail] = useState(null);
+export default function DriverDocumentsPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const isSingleMode = Boolean(id);
+  const cameFromKyc = location.state?.from === "kyc";
+
+  const [drivers, setDrivers] = useState([]);
+  const [selectedId, setSelectedId] = useState(isSingleMode ? Number(id) : null);
+  const [selectedDetail, setSelectedDetail] = useState(null);
   const [activeTab, setActiveTab] = useState("All Drivers");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All Status");
 
   const [previewDocument, setPreviewDocument] = useState(null);
+  const [rejectState, setRejectState] = useState(null); // { driverId, documentKey, reason: "" }
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -1298,39 +1878,34 @@ function DriverDocumentsPage() {
   const [actionLoading, setActionLoading] = useState(false);
 
   // ---------------------------------------------------
-  // LOAD LIST
+  // LOAD LIST (skip in single mode)
   // ---------------------------------------------------
   const loadList = useCallback(async (tab) => {
+    if (isSingleMode) return;
     const token = getAdminToken();
-    if (!token) {
-      setError("Not authenticated. Please login again.");
-      return;
-    }
+    if (!token) return setError("Not authenticated.");
 
-    setLoading(true);
-    setError("");
+    setLoading(true); setError("");
     try {
       const res = await adminApi.getDocumentsList(token, {
         filter: TAB_TO_API[tab] || "ALL",
       });
-
       if (res?.success) {
         setDrivers(res.data || []);
-        if (res.data?.length > 0 && !selectedId) {
-          setSelectedId(res.data[0].driver_id);
+        if (res.data?.length > 0) {
+          setSelectedId((prev) => prev ?? res.data[0].driver_id);
         }
       } else {
         setError(res?.message || "Failed to load list");
         setDrivers([]);
       }
     } catch (e) {
-      console.error("loadList error:", e.message);
       setError(e.message || "Unable to load drivers");
       setDrivers([]);
     } finally {
       setLoading(false);
     }
-  }, [selectedId]);
+  }, [isSingleMode]);
 
   // ---------------------------------------------------
   // LOAD DETAIL
@@ -1338,15 +1913,10 @@ function DriverDocumentsPage() {
   const loadDetail = useCallback(async (driverId) => {
     const token = getAdminToken();
     if (!token || !driverId) return;
-
     setLoadingDetail(true);
     try {
       const res = await adminApi.getDriverDocuments(token, driverId);
-      if (res?.success) {
-        setSelectedDetail(res.data);
-      } else {
-        setSelectedDetail(null);
-      }
+      setSelectedDetail(res?.success ? res.data : null);
     } catch (e) {
       console.error("loadDetail error:", e.message);
       setSelectedDetail(null);
@@ -1356,42 +1926,32 @@ function DriverDocumentsPage() {
   }, []);
 
   // ---------------------------------------------------
-  // INITIAL + TAB CHANGE
+  // EFFECTS
   // ---------------------------------------------------
   useEffect(() => {
-    loadList(activeTab);
-  }, [activeTab, loadList]);
+    if (!isSingleMode) loadList(activeTab);
+  }, [activeTab, isSingleMode, loadList]);
 
   useEffect(() => {
     if (selectedId) loadDetail(selectedId);
   }, [selectedId, loadDetail]);
 
   // ---------------------------------------------------
-  // COUNTS
-  // ---------------------------------------------------
-  const counts = {
-    "All Drivers": drivers.length,
-    Verified: drivers.filter((d) => d.status === "VERIFIED").length,
-    Pending: drivers.filter((d) => d.status === "PENDING").length,
-    Rejected: drivers.filter((d) => d.status === "REJECTED").length,
-  };
-
-  // ---------------------------------------------------
-  // FILTER (client-side within loaded tab)
+  // FILTER (list mode)
   // ---------------------------------------------------
   const filteredDrivers = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return drivers;
+    const q = search.trim().toLowerCase();
+    if (!q) return drivers;
     return drivers.filter(
       (d) =>
-        d.name?.toLowerCase().includes(query) ||
-        d.phone?.toLowerCase().includes(query) ||
-        String(d.driver_id).includes(query)
+        d.name?.toLowerCase().includes(q) ||
+        d.phone?.toLowerCase().includes(q) ||
+        String(d.driver_id).includes(q)
     );
   }, [drivers, search]);
 
   // ---------------------------------------------------
-  // UPDATE DOCUMENT STATUS
+  // ACTIONS
   // ---------------------------------------------------
   const updateDocumentStatus = async (driverId, documentKey, newStatus, reason) => {
     const token = getAdminToken();
@@ -1405,142 +1965,229 @@ function DriverDocumentsPage() {
       if (res?.success) {
         setMessage(`${documentKey} marked as ${newStatus.toLowerCase()}.`);
         setPreviewDocument(null);
-        await Promise.all([loadList(activeTab), loadDetail(driverId)]);
+        setRejectState(null);
+        await loadDetail(driverId);
+        if (!isSingleMode) await loadList(activeTab);
       } else {
         setMessage(res?.message || "Update failed");
       }
     } catch (e) {
-      console.error("updateDocumentStatus error:", e.message);
       setMessage(e.message || "Failed to update");
     } finally {
       setActionLoading(false);
     }
   };
 
-  const handleReject = (driverId, documentKey) => {
-    const reason = window.prompt("Enter rejection reason (min 5 characters):");
-    if (!reason || reason.trim().length < 5) {
-      setMessage("Rejection reason must be at least 5 characters.");
-      return;
-    }
-    updateDocumentStatus(driverId, documentKey, "REJECTED", reason.trim());
-  };
-
   const handleApprove = (driverId, documentKey) => {
     updateDocumentStatus(driverId, documentKey, "VERIFIED", null);
   };
 
+  const handleRejectClick = (driverId, documentKey) => {
+    setRejectState({ driverId, documentKey, reason: "" });
+  };
+
+  const submitReject = () => {
+    if (!rejectState) return;
+    const reason = rejectState.reason.trim();
+    if (reason.length < 5) {
+      setMessage("Rejection reason must be at least 5 characters.");
+      return;
+    }
+    updateDocumentStatus(rejectState.driverId, rejectState.documentKey, "REJECTED", reason);
+  };
+
   const resetFilters = () => {
     setSearch("");
-    setStatusFilter("All Status");
     setActiveTab("All Drivers");
     setMessage("");
     setError("");
   };
 
+  const goBackToKyc = () => {
+    navigate("/admin/drivers/kyc");
+  };
+
+  // ---------------------------------------------------
+  // DERIVED
+  // ---------------------------------------------------
   const selectedDriver = selectedDetail?.driver || null;
   const documents = selectedDetail?.documents || [];
-  const docCounts = selectedDetail?.counts || { total: 0, verified: 0, pending: 0, rejected: 0 };
+  const docCounts = selectedDetail?.counts || { total: 8, verified: 0, pending: 0, rejected: 0 };
 
-  // =====================================================
+  const counts = {
+    "All Drivers": drivers.length,
+    Verified: drivers.filter((d) => d.status === "VERIFIED").length,
+    Pending: drivers.filter((d) => d.status === "PENDING").length,
+    Rejected: drivers.filter((d) => d.status === "REJECTED").length,
+  };
+
+  // ---------------------------------------------------
   // RENDER
-  // =====================================================
+  // ---------------------------------------------------
   return (
     <div className="driver-documents-page">
       <div className="documents-page-header">
         <div>
+          {cameFromKyc && (
+            <button type="button" className="documents-back-btn" onClick={goBackToKyc}>
+              <ArrowLeft size={15} /> Back to KYC
+            </button>
+          )}
           <span className="documents-eyebrow">DOCUMENT VERIFICATION</span>
-          <h1>Driver Documents</h1>
-          <p>View and verify driver documents and credentials.</p>
+          <h1>{isSingleMode ? "Review Documents" : "Driver Documents"}</h1>
+          <p>{isSingleMode
+            ? "Verify individual documents for this driver."
+            : "View and verify driver documents."}</p>
         </div>
         <div className="documents-header-icon">
           <ShieldCheck size={23} />
         </div>
       </div>
 
-      {/* STATS */}
+      {/* STATS (real numbers now) */}
       <div className="documents-stats">
         <article className="documents-stat-card">
           <div className="documents-stat-icon yellow"><FileText size={20} /></div>
           <div>
             <span>Total Documents</span>
-            <strong>{drivers.length * 8}</strong>
-            <small>Across all listed drivers</small>
+            <strong>{docCounts.total}</strong>
+            <small>Required documents</small>
           </div>
         </article>
         <article className="documents-stat-card">
           <div className="documents-stat-icon green"><CheckCircle2 size={20} /></div>
           <div>
-            <span>Verified Documents</span>
-            <strong>{counts.Verified * 8}</strong>
-            <small>Approved drivers</small>
+            <span>Verified</span>
+            <strong>{docCounts.verified}</strong>
+            <small>Approved</small>
           </div>
         </article>
         <article className="documents-stat-card">
           <div className="documents-stat-icon amber"><Clock3 size={20} /></div>
           <div>
-            <span>Pending Documents</span>
-            <strong>{counts.Pending * 8}</strong>
-            <small>Waiting for review</small>
+            <span>Pending</span>
+            <strong>{docCounts.pending}</strong>
+            <small>Waiting review</small>
           </div>
         </article>
         <article className="documents-stat-card">
           <div className="documents-stat-icon red"><XCircle size={20} /></div>
           <div>
-            <span>Rejected Documents</span>
-            <strong>{counts.Rejected * 8}</strong>
+            <span>Rejected</span>
+            <strong>{docCounts.rejected}</strong>
             <small>Require attention</small>
           </div>
         </article>
       </div>
 
-      <div className="documents-main-layout">
-        {/* LEFT — LIST */}
-        <section className="documents-list-panel">
-          <div className="documents-tabs">
-            {[
-              ["All Drivers", counts["All Drivers"]],
-              ["Verified", counts.Verified],
-              ["Pending", counts.Pending],
-              ["Rejected", counts.Rejected],
-            ].map(([tab, count]) => (
-              <button
-                key={tab}
-                type="button"
-                className={`documents-tab ${activeTab === tab ? "active" : ""}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab} <span>{count}</span>
+      <div className={`documents-main-layout ${isSingleMode ? "single-mode" : ""}`}>
+        {/* LEFT LIST — hidden in single mode */}
+        {!isSingleMode && (
+          <section className="documents-list-panel">
+            <div className="documents-tabs">
+              {[
+                ["All Drivers", counts["All Drivers"]],
+                ["Verified", counts.Verified],
+                ["Pending", counts.Pending],
+                ["Rejected", counts.Rejected],
+              ].map(([tab, count]) => (
+                <button
+                  key={tab}
+                  type="button"
+                  className={`documents-tab ${activeTab === tab ? "active" : ""}`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab} <span>{count}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="documents-toolbar">
+              <label className="documents-search">
+                <Search size={16} />
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by name, phone or ID..."
+                />
+              </label>
+              <button type="button" className="documents-reset-button" onClick={resetFilters}>
+                <RotateCcw size={15} /> <span>Reset</span>
               </button>
-            ))}
-          </div>
+            </div>
 
-          <div className="documents-toolbar">
-            <label className="documents-search">
-              <Search size={16} />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by driver name, phone or ID..."
-              />
-            </label>
-            <button
-              type="button"
-              className="documents-reset-button"
-              onClick={resetFilters}
-              title="Reset filters"
-            >
-              <RotateCcw size={15} /> <span>Reset</span>
-            </button>
-          </div>
+            <div className="documents-table-wrap">
+              <table className="documents-table">
+                <thead>
+                  <tr>
+                    <th>#</th><th>Driver</th><th>Phone</th><th>Documents</th><th>Status</th><th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr><td colSpan={6} style={{ textAlign: "center", padding: 30 }}>
+                      <Loader2 size={27} className="documents-spin" />
+                    </td></tr>
+                  ) : filteredDrivers.length === 0 ? (
+                    <tr><td colSpan={6}>
+                      <div className="documents-empty">
+                        <FileText size={27} /><strong>No matching drivers</strong>
+                      </div>
+                    </td></tr>
+                  ) : (
+                    filteredDrivers.map((driver, index) => {
+                      const displayStatus = STATUS_TO_DISPLAY[driver.status] || driver.status;
+                      return (
+                        <tr
+                          key={driver.driver_id}
+                          className={selectedId === driver.driver_id ? "selected" : ""}
+                          onClick={() => setSelectedId(driver.driver_id)}
+                        >
+                          <td>{index + 1}</td>
+                          <td>
+                            <button type="button" className="documents-driver-cell"
+                              onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}>
+                              <span className="documents-driver-avatar"><UserRound size={18} /></span>
+                              <span>
+                                <strong>{driver.name}</strong>
+                                <small>#{driver.driver_id}</small>
+                              </span>
+                            </button>
+                          </td>
+                          <td>{driver.phone}</td>
+                          <td><strong>{driver.documents_submitted || "0/8"}</strong></td>
+                          <td>
+                            <span className={`documents-status ${displayStatus.toLowerCase()}`}>
+                              {displayStatus}
+                            </span>
+                          </td>
+                          <td>
+                            <button type="button" className="documents-view-button"
+                              onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}>
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="documents-table-footer">
+              Showing {filteredDrivers.length} of {drivers.length} drivers
+            </div>
+          </section>
+        )}
 
+        {/* RIGHT PANEL — always visible */}
+        <aside className="documents-profile-panel">
           {message && (
             <div className="documents-message" role="status">
               <CheckCircle2 size={16} /> {message}
               <button onClick={() => setMessage("")}><X size={15} /></button>
             </div>
           )}
-
           {error && (
             <div className="documents-message" style={{ background: "#FEE2E2", color: "#991B1B" }}>
               <AlertCircle size={16} /> {error}
@@ -1548,137 +2195,49 @@ function DriverDocumentsPage() {
             </div>
           )}
 
-          <div className="documents-table-wrap">
-            <table className="documents-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Driver</th>
-                  <th>Phone Number</th>
-                  <th>Documents</th>
-                  <th>Verification Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <>
-                    <tr>
-                      <td colSpan={6} style={{ textAlign: "center", padding: 30 }}>
-                        <Loader2 size={27} className="documents-spin" />
-                        <strong>Loading…</strong>
-                      </td>
-                    </tr>
-                  </>
-                ) : filteredDrivers.length === 0 ? (
-                  <tr><td colSpan={6}>
-                    <div className="documents-empty">
-                      <FileText size={27} />
-                      <strong>No matching drivers</strong>
-                      <span>Try changing your search or filters.</span>
-                    </div>
-                  </td></tr>
-                ) : (
-                  filteredDrivers.map((driver, index) => {
-                    const displayStatus = STATUS_TO_DISPLAY[driver.status] || driver.status;
-                    return (
-                      <tr
-                        key={driver.driver_id}
-                        className={selectedId === driver.driver_id ? "selected" : ""}
-                        onClick={() => setSelectedId(driver.driver_id)}
-                      >
-                        <td>{index + 1}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="documents-driver-cell"
-                            onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}
-                          >
-                            <span className="documents-driver-avatar"><UserRound size={18} /></span>
-                            <span>
-                              <strong>{driver.name}</strong>
-                              <small>#{driver.driver_id}</small>
-                            </span>
-                          </button>
-                        </td>
-                        <td>{driver.phone}</td>
-                        <td>
-                          <strong>{driver.documents_submitted || "0/8"}</strong>
-                        </td>
-                        <td>
-                          <span className={`documents-status ${displayStatus.toLowerCase()}`}>
-                            {displayStatus === "Verified" && <CheckCircle2 size={13} />}
-                            {displayStatus === "Pending" && <Clock3 size={13} />}
-                            {displayStatus === "Rejected" && <XCircle size={13} />}
-                            {displayStatus}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="documents-row-actions">
-                            <button
-                              type="button"
-                              className="documents-view-button"
-                              onClick={(e) => { e.stopPropagation(); setSelectedId(driver.driver_id); }}
-                            >
-                              View
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="documents-table-footer">
-            Showing {filteredDrivers.length} of {drivers.length} drivers
-          </div>
-        </section>
-
-        {/* RIGHT — PROFILE + DOCUMENTS */}
-        {selectedDriver && (
-          <aside className="documents-profile-panel">
-            <div className="documents-profile-heading">
-              <div>
-                <h2>Driver Profile & Documents</h2>
-                <p>Review submitted credentials</p>
-              </div>
+          {loadingDetail ? (
+            <div style={{ padding: 30, textAlign: "center" }}>
+              <Loader2 size={27} className="documents-spin" />
             </div>
-
-            <div className="documents-driver-summary">
-              <div className="documents-profile-person">
-                <div className="documents-large-avatar"><UserRound size={30} /></div>
-                <div className="documents-profile-name">
-                  <h3>{selectedDriver.name}</h3>
-                  <p>{selectedDriver.phone}</p>
+          ) : !selectedDriver ? (
+            <div className="documents-empty">
+              <UserRound size={27} />
+              <strong>Select a driver</strong>
+              <span>{isSingleMode ? "Loading driver…" : "Pick a row to review documents."}</span>
+            </div>
+          ) : (
+            <>
+              <div className="documents-profile-heading">
+                <div>
+                  <h2>Driver Profile & Documents</h2>
+                  <p>Review submitted credentials</p>
                 </div>
-                <span className={`documents-status ${(STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending").toLowerCase()}`}>
-                  {STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending"}
-                </span>
               </div>
 
-              <div className="documents-driver-details">
-                <div><FileText size={15} /><span><small>Driver ID</small><strong>#{selectedDriver.driver_id}</strong></span></div>
-                <div><CalendarDays size={15} /><span><small>Applied On</small><strong>{formatDate(selectedDriver.applied_on)}</strong></span></div>
-              </div>
-            </div>
-
-            <div className="documents-section-title">
-              <h3>Documents</h3>
-              <span>{docCounts.verified}/{docCounts.total} Verified</span>
-            </div>
-
-            <div className="documents-card-grid">
-              {loadingDetail ? (
-                <div style={{ padding: 30, textAlign: "center" }}>
-                  <Loader2 size={27} className="documents-spin" />
+              <div className="documents-driver-summary">
+                <div className="documents-profile-person">
+                  <div className="documents-large-avatar"><UserRound size={30} /></div>
+                  <div className="documents-profile-name">
+                    <h3>{selectedDriver.name}</h3>
+                    <p>{selectedDriver.phone}</p>
+                  </div>
+                  <span className={`documents-status ${(STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending").toLowerCase()}`}>
+                    {STATUS_TO_DISPLAY[selectedDriver.overall_status] || "Pending"}
+                  </span>
                 </div>
-              ) : (
-                documents.map((doc) => {
-                  console.log("docdocdocdocdoc",doc);
-                  
+                <div className="documents-driver-details">
+                  <div><FileText size={15} /><span><small>Driver ID</small><strong>#{selectedDriver.driver_id}</strong></span></div>
+                  <div><CalendarDays size={15} /><span><small>Applied On</small><strong>{formatDate(selectedDriver.applied_on)}</strong></span></div>
+                </div>
+              </div>
+
+              <div className="documents-section-title">
+                <h3>Documents</h3>
+                <span>{docCounts.verified}/{docCounts.total} Verified</span>
+              </div>
+
+              <div className="documents-card-grid">
+                {documents.map((doc) => {
                   const displayStatus = STATUS_TO_DISPLAY[doc.status] || "Pending";
                   return (
                     <article className="individual-document-card" key={doc.key}>
@@ -1686,7 +2245,6 @@ function DriverDocumentsPage() {
                         <span className="individual-document-icon">{documentIcon(doc.type)}</span>
                         <strong>{doc.name}</strong>
                       </div>
-
                       <span className={`documents-status ${displayStatus.toLowerCase()}`}>
                         {displayStatus === "Verified" && <CheckCircle2 size={12} />}
                         {displayStatus === "Pending" && <Clock3 size={12} />}
@@ -1697,45 +2255,42 @@ function DriverDocumentsPage() {
                       <div className="document-placeholder">
                         {doc.url ? (
                           doc.url.toLowerCase().endsWith(".pdf") ? (
-                            <a href={doc.url} target="_blank" rel="noopener noreferrer" style={{ color: "#2563EB" }}>
-                              📄 Open PDF
-                            </a>
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer">📄 Open PDF</a>
                           ) : (
-                            <img src={doc.url} alt={doc.name} style={{ maxWidth: "100%", maxHeight: 140, objectFit: "contain" }} />
+                            <img src={doc.url} alt={doc.name}
+                              style={{ maxWidth: "100%", maxHeight: 140, objectFit: "contain" }}
+                              onError={(e) => { e.target.style.display = "none"; }} />
                           )
                         ) : (
-                          <>
-                            <FileText size={29} />
-                            <span>Not uploaded</span>
-                          </>
+                          <><FileText size={29} /><span>Not uploaded</span></>
                         )}
                       </div>
 
                       {doc.reason && (
-                        <div style={{ background: "#FEE2E2", color: "#991B1B", padding: 6, borderRadius: 6, fontSize: 12, marginBottom: 6 }}>
+                        <div className="doc-reject-reason">
                           Reason: {doc.reason}
                         </div>
                       )}
 
-                      <div style={{ display: "flex", gap: 6 }}>
+                      <div className="document-card-actions">
                         <button
                           type="button"
                           className="document-preview-button"
-                          onClick={() => setPreviewDocument({ driverId: selectedDetail.driver.driver_id, document: doc })}
+                          onClick={() => setPreviewDocument({ driverId: selectedDriver.driver_id, document: doc })}
                         >
                           <Eye size={13} /> Preview
                         </button>
                       </div>
                     </article>
                   );
-                })
-              )}
-            </div>
-          </aside>
-        )}
+                })}
+              </div>
+            </>
+          )}
+        </aside>
       </div>
 
-      {/* MODAL */}
+      {/* PREVIEW MODAL */}
       {previewDocument && (
         <div className="documents-modal-backdrop" onClick={() => setPreviewDocument(null)}>
           <section className="documents-review-modal" onClick={(e) => e.stopPropagation()}>
@@ -1754,11 +2309,8 @@ function DriverDocumentsPage() {
                     📄 Open PDF in new tab
                   </a>
                 ) : (
-                  <img
-                    src={previewDocument.document.url}
-                    alt={previewDocument.document.name}
-                    style={{ maxWidth: "100%", maxHeight: 400, objectFit: "contain" }}
-                  />
+                  <img src={previewDocument.document.url} alt={previewDocument.document.name}
+                    style={{ maxWidth: "100%", maxHeight: 400, objectFit: "contain" }} />
                 )
               ) : (
                 <>
@@ -1774,7 +2326,7 @@ function DriverDocumentsPage() {
                 type="button"
                 className="documents-modal-secondary"
                 disabled={actionLoading}
-                onClick={() => handleReject(previewDocument.driverId, previewDocument.document.key)}
+                onClick={() => handleRejectClick(previewDocument.driverId, previewDocument.document.key)}
               >
                 <XCircle size={16} /> Reject
               </button>
@@ -1790,8 +2342,36 @@ function DriverDocumentsPage() {
           </section>
         </div>
       )}
+
+      {/* REJECT MODAL */}
+      {rejectState && (
+        <div className="documents-modal-backdrop" onClick={() => setRejectState(null)}>
+          <div className="documents-review-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="documents-modal-header">
+              <h2>Reject Document</h2>
+              <button onClick={() => setRejectState(null)}><X size={19} /></button>
+            </div>
+            <p className="documents-modal-hint">Minimum 5 characters. Shown to driver.</p>
+            <textarea
+              rows={4}
+              autoFocus
+              value={rejectState.reason}
+              onChange={(e) => setRejectState({ ...rejectState, reason: e.target.value })}
+              placeholder="e.g. Blurry image, expired license"
+            />
+            <div className="documents-modal-actions">
+              <button className="documents-modal-secondary" onClick={() => setRejectState(null)}>Cancel</button>
+              <button
+                className="documents-modal-approve"
+                disabled={actionLoading || rejectState.reason.trim().length < 5}
+                onClick={submitReject}
+              >
+                Confirm Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default DriverDocumentsPage;

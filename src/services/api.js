@@ -241,10 +241,16 @@ export const adminApi = {
       token,
       body: { is_blocked: isBlocked },
     }),
-    getDrivers: (token, { search = "" } = {}) => {
-  const params = new URLSearchParams();
-  if (search) params.set("search", search);
-  return apiRequest(`admin/drivers?${params.toString()}`, { token });
-},
+  getDrivers: (token, { search = "" } = {}) => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    return apiRequest(`admin/drivers?${params.toString()}`, { token });
+  },
+  toggleDriverBlock: (token, driverId, isBlocked) =>
+    apiRequest(`admin/drivers/${driverId}/block`, {
+      method: "POST",
+      token,
+      body: { is_blocked: isBlocked },
+    }),
 };
 
