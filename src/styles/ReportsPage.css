@@ -6,13 +6,38 @@
 .reports-page {
   width: 100%;
   max-width: 1800px;
+  min-width: 0;
   margin: 0 auto;
   color: #172b40;
+  font-family: inherit;
 }
 
-.reports-page * {
+.reports-page *,
+.reports-page *::before,
+.reports-page *::after {
   box-sizing: border-box;
 }
+
+/* Remove default blue input outlines and shadows */
+
+.reports-page input,
+.reports-page select,
+.reports-page textarea,
+.reports-page button {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.reports-page input:focus,
+.reports-page select:focus,
+.reports-page textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* =========================================
+   HEADER
+========================================= */
 
 .reports-header {
   display: flex;
@@ -37,6 +62,7 @@
   font-size: 26px;
   font-weight: 750;
   letter-spacing: -0.5px;
+  overflow-wrap: anywhere;
 }
 
 .reports-header p {
@@ -58,8 +84,12 @@
   background: #ffda32;
   border: 1px solid #f5cd20;
   border-radius: 6px;
+  outline: none;
+  box-shadow: none;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 750;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -70,7 +100,15 @@
   transform: translateY(-1px);
 }
 
-/* Summary cards */
+.reports-export-button:focus-visible,
+.reports-table-footer button:focus-visible {
+  outline: 2px solid #c9a300;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
 
 .reports-summary {
   display: grid;
@@ -90,6 +128,7 @@
   border: 1px solid #dce7f2;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(24, 49, 75, 0.035);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .report-stat-icon {
@@ -146,6 +185,7 @@
 .report-stat-content small {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 3px;
   font-size: 10px;
 }
@@ -158,10 +198,13 @@
   color: #8190a3;
 }
 
-/* Shared section cards */
+/* =========================================
+   SHARED SECTION CARDS
+========================================= */
 
 .reports-chart-card,
 .reports-transactions-card {
+  width: 100%;
   min-width: 0;
   margin-bottom: 18px;
   overflow: hidden;
@@ -176,7 +219,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+  min-width: 0;
   padding: 19px 20px 14px;
+}
+
+.reports-section-heading > div {
+  min-width: 0;
 }
 
 .reports-section-heading h2 {
@@ -197,6 +245,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  flex-shrink: 0;
   color: #718198;
   font-size: 10px;
   white-space: nowrap;
@@ -205,11 +254,14 @@
 .reports-chart-label > span {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: 2px;
   background: #ffd21a;
 }
 
-/* CSS bar chart */
+/* =========================================
+   CSS BAR CHART
+========================================= */
 
 .reports-chart {
   display: grid;
@@ -222,6 +274,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 0;
   padding: 0 6px 30px 0;
   color: #8a98a8;
   font-size: 10px;
@@ -246,12 +299,13 @@
 
 .reports-bars {
   position: absolute;
-  inset: 0 0 0;
+  inset: 0;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: end;
   gap: 14px;
-  padding: 0 10px 0;
+  min-width: 0;
+  padding: 0 10px;
 }
 
 .reports-bar-column {
@@ -266,15 +320,19 @@
 }
 
 .reports-bar-value {
+  max-width: 100%;
   margin-bottom: 5px;
   color: #62758a;
   font-size: 10px;
   font-weight: 650;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .reports-bar {
   width: min(100%, 54px);
   min-height: 8px;
+  flex-shrink: 0;
   background: #a9c8ed;
   border-radius: 5px 5px 0 0;
   transition: height 0.3s ease, background 0.2s ease;
@@ -295,17 +353,23 @@
 .reports-bar-month {
   position: absolute;
   bottom: -23px;
+  max-width: 100%;
   color: #718198;
   font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .reports-demo-note {
   margin: 28px 20px 14px;
   color: #8a98a8;
   font-size: 10px;
+  line-height: 1.6;
 }
 
-/* Transactions toolbar */
+/* =========================================
+   TRANSACTIONS TOOLBAR
+========================================= */
 
 .reports-table-heading {
   padding-bottom: 17px;
@@ -323,10 +387,14 @@
 
 .reports-filters {
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) 150px 150px 130px auto;
+  grid-template-columns: minmax(0, 1fr) 150px 150px 130px auto;
+  align-items: center;
   gap: 9px;
+  min-width: 0;
   padding: 0 20px 17px;
 }
+
+/* Search, date and status fields */
 
 .reports-search,
 .reports-date-field,
@@ -341,43 +409,79 @@
   background: #fff;
   border: 1px solid #dce5ef;
   border-radius: 6px;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
 }
+
+/* Neutralize browser blue focus styling */
 
 .reports-search:focus-within,
 .reports-date-field:focus-within {
   border-color: #e0bd19;
-  box-shadow: 0 0 0 3px rgba(255, 210, 26, 0.12);
+  outline: none;
+  box-shadow: none;
 }
 
 .reports-search input,
 .reports-date-field input {
+  display: block;
   width: 100%;
   min-width: 0;
+  height: 100%;
   padding: 0;
   color: #435970;
   background: transparent;
-  border: 0;
+  border: none;
+  border-radius: 0;
   outline: none;
+  box-shadow: none;
+  appearance: none;
   font-family: inherit;
   font-size: 10px;
 }
 
+.reports-search input:focus,
+.reports-search input:focus-visible,
+.reports-date-field input:focus,
+.reports-date-field input:focus-visible {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 .reports-search input::placeholder {
   color: #98a5b4;
+  opacity: 1;
 }
 
 .reports-date-field input {
   color: #62758a;
 }
 
+.reports-date-field input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+/* Status dropdown */
+
 .reports-status-filter {
   width: 100%;
+  padding-right: 9px;
   color: #435970;
   font-family: inherit;
   font-size: 10px;
-  outline: none;
   cursor: pointer;
 }
+
+.reports-status-filter:focus,
+.reports-status-filter:focus-visible {
+  border-color: #e0bd19;
+  outline: none;
+  box-shadow: none;
+}
+
+/* Reset button */
 
 .reports-reset-button {
   display: inline-flex;
@@ -390,9 +494,14 @@
   background: #fff;
   border: 1px solid #dce5ef;
   border-radius: 6px;
+  outline: none;
+  box-shadow: none;
+  font-family: inherit;
   font-size: 10px;
   font-weight: 650;
+  white-space: nowrap;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .reports-reset-button:hover {
@@ -400,11 +509,20 @@
   border-color: #b9c7d6;
 }
 
-/* Table */
+.reports-reset-button:focus-visible {
+  outline: 2px solid #c9a300;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   TRANSACTIONS TABLE
+========================================= */
 
 .reports-table-wrap {
   width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .reports-table {
@@ -432,6 +550,7 @@
   color: #536980;
   border-bottom: 1px solid #edf1f5;
   font-size: 11px;
+  vertical-align: middle;
 }
 
 .reports-table tbody tr:last-child td {
@@ -443,7 +562,6 @@
 }
 
 .reports-ride-id {
-  display: table-cell;
   color: #286bb5 !important;
   font-weight: 700;
 }
@@ -469,6 +587,8 @@
   font-weight: 700;
 }
 
+/* Payment status badges */
+
 .reports-payment-status {
   display: inline-flex;
   align-items: center;
@@ -477,11 +597,13 @@
   border-radius: 20px;
   font-size: 10px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .reports-payment-status > span {
   width: 5px;
   height: 5px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: currentColor;
 }
@@ -501,7 +623,9 @@
   background: #ffe5e7;
 }
 
-/* Empty state and footer */
+/* =========================================
+   EMPTY STATE AND FOOTER
+========================================= */
 
 .reports-empty {
   display: flex;
@@ -530,9 +654,20 @@
   background: #ffda32;
   border: 0;
   border-radius: 5px;
+  outline: none;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
+}
+
+.reports-empty button:hover {
+  background: #ffd21a;
+}
+
+.reports-empty button:focus-visible {
+  outline: 2px solid #c9a300;
+  outline-offset: 2px;
 }
 
 .reports-table-footer {
@@ -540,10 +675,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
   padding: 14px 20px;
   color: #8190a1;
   border-top: 1px solid #e8eef4;
   font-size: 10px;
+}
+
+.reports-table-footer > * {
+  min-width: 0;
 }
 
 .reports-table-footer button {
@@ -559,7 +699,9 @@
   line-height: 1.6;
 }
 
-/* Responsive */
+/* =========================================
+   RESPONSIVE: LAPTOPS
+========================================= */
 
 @media (max-width: 1250px) {
   .reports-summary {
@@ -567,11 +709,7 @@
   }
 
   .reports-filters {
-    grid-template-columns: minmax(180px, 1fr) 1fr 1fr;
-  }
-
-  .reports-status-filter {
-    grid-column: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .reports-reset-button {
@@ -579,9 +717,14 @@
   }
 }
 
+/* =========================================
+   RESPONSIVE: TABLETS
+========================================= */
+
 @media (max-width: 760px) {
   .reports-header {
     align-items: flex-start;
+    gap: 12px;
   }
 
   .reports-header h1 {
@@ -594,7 +737,7 @@
   }
 
   .reports-filters {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     padding-right: 15px;
     padding-left: 15px;
   }
@@ -631,22 +774,31 @@
   }
 }
 
+/* =========================================
+   RESPONSIVE: MOBILE
+========================================= */
+
 @media (max-width: 480px) {
+  .reports-header {
+    flex-direction: column;
+  }
+
+  .reports-header h1 {
+    font-size: 21px;
+  }
+
+  .reports-export-button {
+    align-self: flex-start;
+  }
+
   .reports-summary {
     grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
   }
 
   .report-stat-card {
     min-height: 85px;
     padding: 13px;
-  }
-
-  .reports-header {
-    flex-direction: column;
-  }
-
-  .reports-export-button {
-    align-self: flex-start;
   }
 
   .reports-filters {
@@ -655,6 +807,10 @@
 
   .reports-search {
     grid-column: auto;
+  }
+
+  .reports-reset-button {
+    justify-self: start;
   }
 
   .reports-chart-card,
@@ -670,14 +826,77 @@
   .reports-chart {
     grid-template-columns: 40px minmax(0, 1fr);
     height: 205px;
+    padding-right: 10px;
+    padding-left: 6px;
   }
 
   .reports-chart-axis {
     font-size: 9px;
   }
 
+  .reports-bars {
+    gap: 5px;
+    padding-right: 2px;
+    padding-left: 2px;
+  }
+
   .reports-bar-value,
   .reports-bar-month {
     font-size: 9px;
+  }
+
+  .reports-demo-note {
+    margin-right: 12px;
+    margin-left: 12px;
+  }
+
+  .reports-table-footer {
+    gap: 10px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE: VERY SMALL SCREENS
+========================================= */
+
+@media (max-width: 360px) {
+  .reports-header h1 {
+    font-size: 20px;
+  }
+
+  .report-stat-card {
+    gap: 10px;
+  }
+
+  .report-stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .reports-chart {
+    grid-template-columns: 34px minmax(0, 1fr);
+    padding-right: 7px;
+    padding-left: 4px;
+  }
+
+  .reports-bars {
+    gap: 3px;
+    padding-right: 1px;
+    padding-left: 1px;
+  }
+
+  .reports-bar-value,
+  .reports-bar-month {
+    font-size: 8px;
+  }
+
+  .reports-section-heading {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .reports-table-footer {
+    padding-right: 12px;
+    padding-left: 12px;
   }
 }

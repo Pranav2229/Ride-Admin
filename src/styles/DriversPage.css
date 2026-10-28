@@ -1,6 +1,9 @@
 /* =====================================================
+
    PAGE LAYOUT
+
    ===================================================== */
+
 .drivers-page {
   width: 100%;
   color: #111827;
@@ -48,6 +51,7 @@
 /* =====================================================
    STATS CARDS
    ===================================================== */
+
 .drivers-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -109,6 +113,7 @@
 /* =====================================================
    EARNINGS SUMMARY
    ===================================================== */
+
 .driver-earnings-summary {
   padding: 20px;
   border: 1px solid #E5E7EB;
@@ -122,7 +127,7 @@
   align-items: center;
   gap: 16px;
   margin-bottom: 16px;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .driver-earnings-icon {
@@ -168,6 +173,7 @@
 /* =====================================================
    TABLE CARD
    ===================================================== */
+
 .drivers-card {
   border: 1px solid #E5E7EB;
   border-radius: 12px;
@@ -207,9 +213,11 @@
 /* =====================================================
    TOOLBAR
    ===================================================== */
+
 .drivers-toolbar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 14px;
   padding: 20px;
   background: #F9FAFB;
@@ -221,50 +229,101 @@
   align-items: center;
   gap: 10px;
   flex: 1;
+  min-width: 0;
   padding: 10px 14px;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   background: #FFFFFF;
   color: #6B7280;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Yellow border when search is focused */
+
+.drivers-search:focus-within {
+  border-color: #FFD21A;
+  box-shadow: 0 0 0 2px rgba(255, 210, 26, 0.12);
+  outline: none;
 }
 
 .drivers-search input {
   width: 100%;
-  border: none;
-  outline: none;
+  min-width: 0;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent;
+  font-family: inherit;
   font-size: 13px;
   color: #111827;
+}
+
+.drivers-search input:focus,
+.drivers-search input:focus-visible,
+.drivers-search input:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.drivers-search input::placeholder {
+  color: #9CA3AF;
 }
 
 .drivers-status-select {
   position: relative;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  margin-left: 2px;
 }
 
 .drivers-status-select select {
+  min-width: 140px;
+  min-height: 40px;
+  margin: 0;
   padding: 10px 36px 10px 14px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #DCE5EF;
   border-radius: 8px;
-  background: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #172B40;
+  font-family: inherit;
   font-size: 13px;
-  color: #111827;
-  outline: none;
+  outline: none !important;
+  box-shadow: none !important;
   appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Yellow focus border for status and verification dropdowns */
+
+.drivers-status-select select:focus,
+.drivers-status-select select:focus-visible,
+.drivers-status-select select:active {
+  outline: none !important;
+  border-color: #FFD21A !important;
+  box-shadow: 0 0 0 2px rgba(255, 210, 26, 0.12) !important;
+}
+
+.drivers-status-select select:hover {
+  border-color: #BDCADA;
 }
 
 .drivers-status-select svg {
   position: absolute;
   right: 12px;
   pointer-events: none;
-  color: #6B7280;
+  color: #6B7C90;
 }
 
 .drivers-reset-button {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
+  margin-left: 2px;
   padding: 10px 14px;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
@@ -282,6 +341,7 @@
 /* =====================================================
    NOTICES & TABLES
    ===================================================== */
+
 .drivers-notice {
   display: flex;
   align-items: center;
@@ -337,6 +397,7 @@
 /* =====================================================
    TABLE CELLS
    ===================================================== */
+
 .driver-row-number {
   color: #9CA3AF;
   font-weight: 600;
@@ -445,6 +506,7 @@
 /* =====================================================
    FOOTER & PAGINATION
    ===================================================== */
+
 .drivers-table-footer {
   display: flex;
   justify-content: space-between;
@@ -492,161 +554,533 @@
 }
 
 /* ===== New summary card colors ===== */
-.driver-icon-orange { background: #FEF3C7; color: #D97706; }
+
+.driver-icon-orange {
+  background: #FEF3C7;
+  color: #D97706;
+}
 
 /* ===== New row cell styles ===== */
+
 .driver-name-cell small {
   display: block;
   font-size: 11px;
   color: #6B7280;
   margin-top: 2px;
 }
+
 .driver-badge-inline {
-  display: inline-flex; align-items: center; gap: 3px;
-  margin-left: 6px; padding: 1px 6px;
-  border-radius: 4px; font-size: 10px; font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
 }
-.driver-badge-danger { background: #FEE2E2; color: #991B1B; }
 
-.driver-contact-stack { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: #374151; }
-.driver-contact-stack span { display: inline-flex; align-items: center; gap: 4px; }
+.driver-badge-danger {
+  background: #FEE2E2;
+  color: #991B1B;
+}
 
-.driver-vehicle-stack { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: #374151; }
-.driver-vehicle-stack small { color: #6B7280; font-size: 11px; }
+.driver-contact-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: #374151;
+}
 
-.driver-muted { color: #9CA3AF; font-size: 12px; }
+.driver-contact-stack span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.driver-vehicle-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.driver-vehicle-stack small {
+  color: #6B7280;
+  font-size: 11px;
+}
+
+.driver-muted {
+  color: #9CA3AF;
+  font-size: 12px;
+}
 
 .driver-verify-badge {
-  display: inline-flex; align-items: center;
-  padding: 3px 9px; border-radius: 12px;
-  font-size: 11px; font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
 }
-.driver-verify-verified { background: #ECFDF5; color: #065F46; }
-.driver-verify-pending  { background: #FEF3C7; color: #92400E; }
-.driver-verify-rejected { background: #FEE2E2; color: #991B1B; }
+
+.driver-verify-verified {
+  background: #ECFDF5;
+  color: #065F46;
+}
+
+.driver-verify-pending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.driver-verify-rejected {
+  background: #FEE2E2;
+  color: #991B1B;
+}
 
 /* ===== Row menu dropdown ===== */
-.driver-row-menu { position: relative; }
+
+.driver-row-menu {
+  position: relative;
+}
+
 .driver-menu-trigger {
-  width: 30px; height: 30px; border-radius: 6px;
-  border: 1px solid #E5E7EB; background: #fff;
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer; color: #374151;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #374151;
 }
-.driver-menu-trigger:hover { background: #F9FAFB; }
+
+.driver-menu-trigger:hover {
+  background: #F9FAFB;
+}
+
 .driver-menu-popup {
-  position: absolute; right: 0; top: 34px;
-  background: #fff; border: 1px solid #E5E7EB; border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.15);
-  z-index: 50; min-width: 190px; padding: 6px;
+  position: absolute;
+  right: 0;
+  top: 34px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  min-width: 190px;
+  padding: 6px;
 }
+
 .driver-menu-popup button {
-  display: flex; align-items: center; gap: 8px;
-  width: 100%; padding: 8px 10px;
-  background: transparent; border: none; border-radius: 6px;
-  font-size: 13px; text-align: left; cursor: pointer; color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  color: #111827;
 }
-.driver-menu-popup button:hover { background: #F3F4F6; }
-.driver-menu-divider { height: 1px; background: #E5E7EB; margin: 4px 0; }
-.driver-menu-danger { color: #991B1B !important; }
-.driver-menu-danger:hover { background: #FEE2E2 !important; }
-.driver-menu-success { color: #065F46 !important; }
-.driver-menu-success:hover { background: #ECFDF5 !important; }
+
+.driver-menu-popup button:hover {
+  background: #F3F4F6;
+}
+
+.driver-menu-divider {
+  height: 1px;
+  background: #E5E7EB;
+  margin: 4px 0;
+}
+
+.driver-menu-danger {
+  color: #991B1B !important;
+}
+
+.driver-menu-danger:hover {
+  background: #FEE2E2 !important;
+}
+
+.driver-menu-success {
+  color: #065F46 !important;
+}
+
+.driver-menu-success:hover {
+  background: #ECFDF5 !important;
+}
 
 /* ===== Drawer ===== */
+
 .driver-drawer-backdrop {
-  position: fixed; inset: 0; background: rgba(17,24,39,.45);
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.45);
   z-index: 1000;
 }
+
 .driver-drawer {
-  position: fixed; top: 0; right: 0; bottom: 0;
-  width: 100%; max-width: 440px;
-  background: #fff;
-  box-shadow: -8px 0 40px rgba(0,0,0,.2);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background: #FFFFFF;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.2);
   z-index: 1001;
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   animation: slideIn 0.2s ease-out;
 }
-@keyframes slideIn {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
-}
-.driver-drawer-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 16px 20px; border-bottom: 1px solid #E5E7EB;
-}
-.driver-drawer-head h2 { font-size: 16px; font-weight: 700; margin: 0; }
-.driver-drawer-head button {
-  background: transparent; border: none; cursor: pointer; color: #6B7280;
-}
-.driver-drawer-loading { padding: 40px; text-align: center; color: #6B7280; }
-.driver-drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
 
-.driver-drawer-profile { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.driver-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.driver-drawer-head h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.driver-drawer-head button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6B7280;
+}
+
+.driver-drawer-loading {
+  padding: 40px;
+  text-align: center;
+  color: #6B7280;
+}
+
+.driver-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.driver-drawer-profile {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
 .driver-drawer-avatar {
-  width: 54px; height: 54px; border-radius: 50%;
-  background: #F3F4F6; display: flex; align-items: center; justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-.driver-drawer-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.driver-drawer-profile h3 { font-size: 17px; margin: 0; }
-.driver-drawer-profile p { font-size: 12px; color: #6B7280; margin: 3px 0 0; display: flex; gap: 4px; align-items: center; }
+
+.driver-drawer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.driver-drawer-profile h3 {
+  font-size: 17px;
+  margin: 0;
+}
+
+.driver-drawer-profile p {
+  font-size: 12px;
+  color: #6B7280;
+  margin: 3px 0 0;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
 
 .driver-drawer-fields {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 12px; background: #F9FAFB; border-radius: 10px; margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 10px;
+  margin-bottom: 14px;
 }
+
 .driver-drawer-fields div {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
 }
 
 .driver-drawer-badges {
-  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
 }
+
 .driver-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 10px; border-radius: 12px;
-  background: #F3F4F6; color: #374151;
-  font-size: 12px; font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #F3F4F6;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
 }
-.driver-badge-danger { background: #FEE2E2; color: #991B1B; }
 
 .driver-drawer-section {
-  margin-bottom: 14px; padding-top: 14px; border-top: 1px solid #E5E7EB;
+  margin-bottom: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #E5E7EB;
 }
-.driver-drawer-section h4 {
-  font-size: 12px; text-transform: uppercase; color: #6B7280;
-  display: flex; align-items: center; gap: 6px; margin: 0 0 8px;
-}
-.driver-drawer-info-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-}
-.driver-drawer-info-grid div {
-  background: #F9FAFB; padding: 8px 10px; border-radius: 6px;
-}
-.driver-drawer-info-grid span { display: block; font-size: 11px; color: #6B7280; }
-.driver-drawer-info-grid strong { font-size: 13px; color: #111827; }
 
-.driver-drawer-actions {
-  display: flex; gap: 6px; margin-top: 14px;
+.driver-drawer-section h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
 }
-.driver-drawer-action-btn {
-  flex: 1; padding: 8px 10px;
-  background: #F3F4F6; border: 1px solid #E5E7EB;
-  border-radius: 8px; font-size: 12px; font-weight: 600;
-  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+
+.driver-drawer-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.driver-drawer-info-grid div {
+  background: #F9FAFB;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.driver-drawer-info-grid span {
+  display: block;
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.driver-drawer-info-grid strong {
+  font-size: 13px;
   color: #111827;
 }
-.driver-drawer-action-btn:hover { background: #E5E7EB; }
+
+.driver-drawer-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.driver-drawer-action-btn {
+  flex: 1;
+  padding: 8px 10px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #111827;
+}
+
+.driver-drawer-action-btn:hover {
+  background: #E5E7EB;
+}
 
 .driver-drawer-block-btn {
-  width: 100%; padding: 11px; margin-top: 14px;
-  border: none; border-radius: 8px;
-  font-size: 13px; font-weight: 700;
+  width: 100%;
+  padding: 11px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
-.driver-drawer-block-btn.block { background: #EF4444; color: #fff; }
-.driver-drawer-block-btn.unblock { background: #10B981; color: #fff; }
-.driver-drawer-block-btn:hover { opacity: .9; }
+
+.driver-drawer-block-btn.block {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.driver-drawer-block-btn.unblock {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.driver-drawer-block-btn:hover {
+  opacity: 0.9;
+}
+
+/* =====================================================
+   INPUT & DROPDOWN FOCUS FIX
+   ===================================================== */
+
+/* Keep search input itself free of browser blue outline */
+
+.drivers-search input {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent;
+}
+
+.drivers-search input:focus,
+.drivers-search input:focus-visible,
+.drivers-search input:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Yellow border around the search container when focused */
+
+.drivers-search:focus-within {
+  border-color: #FFD21A !important;
+  box-shadow: 0 0 0 2px rgba(255, 210, 26, 0.12) !important;
+  outline: none !important;
+}
+
+/* Keep space between status and verification dropdowns */
+
+.drivers-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* Status and verification dropdown containers */
+
+.drivers-status-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 2px;
+}
+
+/* Dropdown styling */
+
+.drivers-status-select select {
+  min-width: 140px;
+  min-height: 40px;
+  padding: 10px 36px 10px 14px;
+  color: #172B40;
+  background-color: #FFFFFF;
+  border: 1px solid #DCE5EF;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Yellow focus border instead of blue */
+
+.drivers-status-select select:focus,
+.drivers-status-select select:focus-visible,
+.drivers-status-select select:active {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(255, 210, 26, 0.12) !important;
+  border-color: #FFD21A !important;
+}
+
+/* Subtle hover effect */
+
+.drivers-status-select select:hover {
+  border-color: #BDCADA;
+}
+
+/* Dropdown arrow */
+
+.drivers-status-select svg {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+  color: #6B7C90;
+}
+
+/* Reset button spacing */
+
+.drivers-reset-button {
+  flex-shrink: 0;
+  margin-left: 2px;
+}
+
+/* Responsive spacing */
+
+@media (max-width: 700px) {
+  .drivers-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .drivers-search {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .drivers-status-select {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .drivers-status-select select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .drivers-reset-button {
+    justify-content: center;
+    margin-left: 0;
+  }
+}
