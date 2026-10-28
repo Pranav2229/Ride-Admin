@@ -128,18 +128,123 @@ export const liveRideApi = {
 
 
 
+// export const adminApi = {
+//   // Admin Login
+//   login: (credentials) =>
+//     apiRequest("admin/login", {
+//       method: "POST",
+//       body: credentials,
+//     }),
+
+//   // Admin Dashboard Overview
+//   getDashboardOverview: (token) =>
+//     apiRequest("admin/dashboard/overview", {
+//       method: "GET",
+//       token,
+//     }),
+// };
+
 export const adminApi = {
-  // Admin Login
+  // =====================================================
+  // AUTH
+  // =====================================================
   login: (credentials) =>
     apiRequest("admin/login", {
       method: "POST",
       body: credentials,
     }),
 
-  // Admin Dashboard Overview
-  getDashboardOverview: (token) =>
-    apiRequest("admin/dashboard/overview", {
+  // =====================================================
+  // DASHBOARD
+  // =====================================================
+  getDashboardOverview: (token, days = 7) =>
+    apiRequest(`admin/dashboard/overview?days=${days}`, {
       method: "GET",
       token,
     }),
+
+  // =====================================================
+  // DRIVER KYC
+  // =====================================================
+  getKycStats: (token) =>
+    apiRequest("admin/drivers/kyc-stats", {
+      method: "GET",
+      token,
+    }),
+
+  getKycList: (token, { status = "PENDING", search = "", limit = 100, offset = 0 } = {}) => {
+    const params = new URLSearchParams({
+      status,
+      limit: String(limit),
+      offset: String(offset),
+    });
+    if (search) params.set("search", search);
+    return apiRequest(`admin/drivers/kyc-list?${params.toString()}`, {
+      method: "GET",
+      token,
+    });
+  },
+
+  getKycDetail: (token, driverId) =>
+    apiRequest(`admin/drivers/${driverId}/kyc`, {
+      method: "GET",
+      token,
+    }),
+
+  approveKyc: (token, driverId) =>
+    apiRequest(`admin/drivers/${driverId}/kyc/approve`, {
+      method: "POST",
+      token,
+    }),
+
+  rejectKyc: (token, driverId, reason) =>
+    apiRequest(`admin/drivers/${driverId}/kyc/reject`, {
+      method: "POST",
+      token,
+      body: { reason },
+    }),
+
+  updateKycSection: (token, driverId, section, status, reason) =>
+    apiRequest(`admin/drivers/${driverId}/kyc/section/${section}/status`, {
+      method: "POST",
+      token,
+      body: { status, reason },
+    }),
+
+  // Inside adminApi, after the KYC block:
+
+  getDocumentsList: (token, { filter = "ALL", search = "" } = {}) => {
+    const params = new URLSearchParams({ filter });
+    if (search) params.set("search", search);
+    return apiRequest(`admin/drivers/documents-list?${params.toString()}`, { token });
+  },
+
+  getDriverDocuments: (token, driverId) =>
+    apiRequest(`admin/drivers/${driverId}/documents`, { token }),
+
+  updateDocumentStatus: (token, driverId, documentKey, status, reason) =>
+    apiRequest(`admin/drivers/${driverId}/documents/${documentKey}/status`, {
+      method: "POST",
+      token,
+      body: { status, reason },
+    }),
+
+  getCustomers: (token, { search = "" } = {}) => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    return apiRequest(`admin/customers?${params.toString()}`, { token });
+  },
+
+  toggleCustomerBlock: (token, customerId, isBlocked) =>
+    apiRequest(`admin/customers/${customerId}/block`, {
+      method: "POST",
+      token,
+      body: { is_blocked: isBlocked },
+    }),
+    getDrivers: (token, { search = "" } = {}) => {
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  return apiRequest(`admin/drivers?${params.toString()}`, { token });
+},
 };
+

@@ -1,8 +1,64 @@
+/* =====================================================
+   ACTION BUTTONS (Block / Unblock)
+   ===================================================== */
+.customer-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
 
+.btn-block {
+  background: #FEF2F2;
+  color: #991B1B;
+  border-color: #FCA5A5;
+}
+
+.btn-block:hover {
+  background: #FEE2E2;
+}
+
+.btn-unblock {
+  background: #F0FDF4;
+  color: #166534;
+  border-color: #86EFAC;
+}
+
+.btn-unblock:hover {
+  background: #DCFCE7;
+}
+
+.customer-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   SPINNER ANIMATION
+   ===================================================== */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   PAGE LAYOUT
+   ===================================================== */
 .customers-page {
   width: 100%;
-  padding: 24px;
-  color: var(--text-primary, #f1f5f9);
+  color: #111827; /* Dark text for light mode */
   box-sizing: border-box;
 }
 
@@ -18,11 +74,12 @@
   margin: 0 0 8px;
   font-size: 28px;
   font-weight: 700;
+  color: #111827;
 }
 
 .customers-header p {
   margin: 0;
-  color: var(--text-secondary, #94a3b8);
+  color: #6B7280;
   font-size: 14px;
 }
 
@@ -32,12 +89,18 @@
   justify-content: center;
   gap: 8px;
   padding: 10px 16px;
-  border: 1px solid var(--border-color, #334155);
+  border: 1px solid #E5E7EB;
   border-radius: 8px;
-  background: var(--card-bg, #111827);
-  color: inherit;
+  background: #FFFFFF;
+  color: #374151;
   font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.customers-refresh-btn:hover {
+  background: #F9FAFB;
 }
 
 .customers-refresh-btn:disabled {
@@ -45,6 +108,9 @@
   cursor: not-allowed;
 }
 
+/* =====================================================
+   STATS CARDS
+   ===================================================== */
 .customers-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -58,9 +124,9 @@
   gap: 16px;
   min-width: 0;
   padding: 22px;
-  border: 1px solid var(--border-color, #273449);
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
-  background: var(--card-bg, #111827);
+  background: #FFFFFF;
 }
 
 .customer-stat-icon {
@@ -74,37 +140,42 @@
 }
 
 .customer-stat-icon.total {
-  background: #1e3a8a;
-  color: #93c5fd;
+  background: #EFF6FF;
+  color: #2563EB;
 }
 
 .customer-stat-icon.active {
-  background: #064e3b;
-  color: #6ee7b7;
+  background: #ECFDF5;
+  color: #16A34A;
 }
 
 .customer-stat-icon.blocked {
-  background: #7f1d1d;
-  color: #fca5a5;
+  background: #FEF2F2;
+  color: #DC2626;
 }
 
 .customer-stat-card p {
   margin: 0 0 8px;
-  color: var(--text-secondary, #94a3b8);
+  color: #6B7280;
   font-size: 13px;
+  font-weight: 500;
 }
 
 .customer-stat-card h2 {
   margin: 0;
   font-size: 26px;
   font-weight: 700;
+  color: #111827;
 }
 
+/* =====================================================
+   TABLE CARD & TOOLBAR
+   ===================================================== */
 .customers-table-card {
   overflow: hidden;
-  border: 1px solid var(--border-color, #273449);
+  border: 1px solid #E5E7EB;
   border-radius: 12px;
-  background: var(--card-bg, #111827);
+  background: #FFFFFF;
 }
 
 .customers-toolbar {
@@ -113,7 +184,7 @@
   align-items: center;
   gap: 14px;
   padding: 20px;
-  border-bottom: 1px solid var(--border-color, #273449);
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .customers-search {
@@ -121,11 +192,11 @@
   align-items: center;
   gap: 10px;
   width: min(100%, 440px);
-  padding: 11px 13px;
-  border: 1px solid var(--border-color, #334155);
+  padding: 10px 14px;
+  border: 1px solid #E5E7EB;
   border-radius: 8px;
-  color: var(--text-secondary, #94a3b8);
-  background: var(--input-bg, #0b1220);
+  color: #6B7280;
+  background: #FFFFFF;
 }
 
 .customers-search input {
@@ -134,36 +205,40 @@
   border: 0;
   outline: none;
   background: transparent;
-  color: inherit;
+  color: #111827;
   font: inherit;
   font-size: 13px;
 }
 
 .customers-search input::placeholder {
-  color: #64748b;
+  color: #9CA3AF;
 }
 
 .customers-toolbar select {
-  padding: 11px 14px;
-  border: 1px solid var(--border-color, #334155);
+  padding: 10px 14px;
+  border: 1px solid #E5E7EB;
   border-radius: 8px;
-  background: var(--input-bg, #0b1220);
-  color: inherit;
+  background: #FFFFFF;
+  color: #111827;
   font: inherit;
   font-size: 13px;
   outline: none;
+  cursor: pointer;
 }
 
+/* =====================================================
+   MESSAGES & ERRORS
+   ===================================================== */
 .customers-error {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin: 20px;
   padding: 14px;
-  border: 1px solid #7f1d1d;
+  border: 1px solid #FCA5A5;
   border-radius: 8px;
-  background: #450a0a;
-  color: #fecaca;
+  background: #FEF2F2;
+  color: #991B1B;
   font-size: 14px;
   line-height: 1.6;
   overflow-wrap: anywhere;
@@ -172,10 +247,13 @@
 .customers-message {
   padding: 42px 20px;
   text-align: center;
-  color: var(--text-secondary, #94a3b8);
+  color: #6B7280;
   font-size: 14px;
 }
 
+/* =====================================================
+   TABLE
+   ===================================================== */
 .customers-table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -190,18 +268,20 @@
 
 .customers-table th {
   padding: 15px 20px;
-  background: var(--table-header-bg, #172033);
-  color: var(--text-secondary, #94a3b8);
+  background: #F9FAFB;
+  color: #6B7280;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.4px;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .customers-table td {
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color, #273449);
+  border-bottom: 1px solid #F3F4F6;
   font-size: 13px;
+  color: #374151;
 }
 
 .customers-table tbody tr:last-child td {
@@ -209,9 +289,12 @@
 }
 
 .customers-table tbody tr:hover {
-  background: var(--hover-bg, #172033);
+  background: #F9FAFB;
 }
 
+/* =====================================================
+   TABLE CELLS SPECIFIC
+   ===================================================== */
 .customer-name-cell {
   display: flex;
   align-items: center;
@@ -226,48 +309,70 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: #1d4ed8;
-  color: white;
-  font-weight: 700;
+  background: #EFF6FF;
+  color: #2563EB;
 }
 
 .customer-name-cell strong {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   font-weight: 600;
+  color: #111827;
 }
 
 .customer-name-cell small {
   display: block;
-  color: var(--text-secondary, #94a3b8);
+  color: #6B7280;
   font-size: 11px;
 }
 
+.customer-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #374151;
+}
+
+.customer-rides {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* =====================================================
+   STATUS PILLS
+   ===================================================== */
 .customer-status {
   display: inline-block;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
 }
 
 .customer-status.active {
-  background: #064e3b;
-  color: #6ee7b7;
+  background: #DCFCE7;
+  color: #166534;
 }
 
 .customer-status.blocked {
-  background: #7f1d1d;
-  color: #fca5a5;
+  background: #FEE2E2;
+  color: #991B1B;
 }
 
 .customers-table-footer {
   padding: 15px 20px;
-  border-top: 1px solid var(--border-color, #273449);
-  color: var(--text-secondary, #94a3b8);
+  border-top: 1px solid #E5E7EB;
+  color: #6B7280;
   font-size: 12px;
+  font-weight: 500;
 }
 
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
 @media (max-width: 900px) {
   .customers-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
