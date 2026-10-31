@@ -1,4 +1,3 @@
-
 /* ========================================
    DRIVER KYC REVIEW
 ======================================== */
@@ -6,11 +5,15 @@
 .driver-kyc-page {
   width: 100%;
   max-width: 1800px;
+  min-width: 0;
   margin: 0 auto;
   color: #172b40;
+  box-sizing: border-box;
 }
 
-.driver-kyc-page * {
+.driver-kyc-page *,
+.driver-kyc-page *::before,
+.driver-kyc-page *::after {
   box-sizing: border-box;
 }
 
@@ -56,7 +59,9 @@
   border-radius: 10px;
 }
 
-/* Summary */
+/* ========================================
+   SUMMARY CARDS
+======================================== */
 
 .driver-kyc-summary {
   display: grid;
@@ -70,28 +75,35 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 17px 19px;
+  min-width: 0;
+  padding: 20px 23px;
   background: #fff;
   border: 1px solid #e0e8f1;
-  border-radius: 9px;
-  box-shadow: 0 2px 8px rgba(24, 49, 75, 0.035);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(24, 49, 75, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kyc-summary-card:hover {
+  border-color: #f5d34f;
+  box-shadow: 0 5px 16px rgba(24, 49, 75, 0.07);
 }
 
 .kyc-summary-card > span {
   color: #77879a;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .kyc-summary-card strong {
   color: #142c41;
-  font-size: 25px;
+  font-size: 28px;
   line-height: 1.2;
 }
 
 .kyc-summary-card > svg {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: 20px;
+  right: 20px;
   color: #d5aa00;
 }
 
@@ -103,31 +115,43 @@
   color: #e5484d;
 }
 
-/* Main layout */
+/* ========================================
+   MAIN LAYOUT
+======================================== */
 
 .driver-kyc-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 285px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 357px);
   align-items: start;
-  gap: 17px;
+  gap: 20px;
+  width: 100%;
+  min-width: 0;
 }
 
 .driver-kyc-card,
 .driver-kyc-profile {
   min-width: 0;
+  max-width: 100%;
   background: #fff;
   border: 1px solid #dce5ef;
-  border-radius: 9px;
-  box-shadow: 0 3px 10px rgba(24, 49, 75, 0.035);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(24, 49, 75, 0.04);
 }
 
-/* Tabs */
+.driver-kyc-card {
+  overflow: hidden;
+}
+
+/* ========================================
+   TABS
+======================================== */
 
 .driver-kyc-tabs {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 16px 17px 13px;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 18px 20px 15px;
   border-bottom: 1px solid #edf1f5;
 }
 
@@ -136,28 +160,35 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 34px;
-  padding: 7px 12px;
+  min-height: 40px;
+  padding: 9px 15px;
   color: #52677d;
   background: #f7f9fc;
   border: 1px solid #e3eaf2;
-  border-radius: 6px;
-  font-size: 11px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 650;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.driver-kyc-tab:hover {
+  background: #fff9dc;
+  border-color: #f5d34f;
 }
 
 .driver-kyc-tab > span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 19px;
-  height: 19px;
-  padding: 0 5px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
   color: #53677b;
   background: #e9eef5;
-  border-radius: 5px;
-  font-size: 10px;
+  border-radius: 6px;
+  font-size: 11px;
 }
 
 .driver-kyc-tab.active {
@@ -168,89 +199,132 @@
 
 .driver-kyc-tab.active > span {
   color: #172b40;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.65);
 }
 
-/* Search */
+/* ========================================
+   SEARCH TOOLBAR
+======================================== */
 
 .driver-kyc-toolbar {
   display: flex;
-  gap: 9px;
-  padding: 14px 17px;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 15px 20px;
+  background: #fff;
+  border-bottom: 1px solid #edf1f5;
 }
 
 .driver-kyc-search {
   display: flex;
   align-items: center;
-  gap: 9px;
-  flex: 1;
+  gap: 10px;
+  flex: 1 1 auto;
   min-width: 0;
-  height: 37px;
-  padding: 0 10px;
+  height: 44px;
+  padding: 0 13px;
   color: #8492a3;
+  background: #fff;
   border: 1px solid #dce5ef;
-  border-radius: 6px;
+  border-radius: 9px;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.driver-kyc-search > svg {
+  flex-shrink: 0;
+  color: #8292a5;
+}
+
+.driver-kyc-search:focus,
 .driver-kyc-search:focus-within {
-  border-color: #e0b900;
-  box-shadow: 0 0 0 3px rgba(255, 210, 26, 0.13);
+  border: 1px solid #f5c400 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255, 210, 26, 0.16) !important;
 }
 
-.driver-kyc-search input {
+.driver-kyc-search input,
+.driver-kyc-search input:hover,
+.driver-kyc-search input:active,
+.driver-kyc-search input:focus,
+.driver-kyc-search input:focus-visible {
+  display: block;
   width: 100%;
   min-width: 0;
+  height: 100%;
+  margin: 0;
   padding: 0;
   color: #253b50;
-  background: transparent;
-  border: 0;
-  outline: none;
-  font-size: 11px;
+  background: transparent !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: 12px;
 }
 
 .driver-kyc-search input::placeholder {
   color: #99a5b3;
+  opacity: 1;
 }
 
 .driver-kyc-reset {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 37px;
-  height: 37px;
-  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
   color: #53677b;
   background: #fff;
   border: 1px solid #dce5ef;
-  border-radius: 6px;
+  border-radius: 9px;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .driver-kyc-reset:hover {
-  background: #fff6c9;
-  border-color: #ffdf4d;
+  color: #172b40;
+  background: #fff8d8;
+  border-color: #f5c400;
 }
 
-/* Notice */
+.driver-kyc-reset:focus,
+.driver-kyc-reset:focus-visible {
+  outline: 2px solid #f5c400;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   NOTICE
+======================================== */
 
 .driver-kyc-notice {
   display: flex;
   align-items: center;
   gap: 9px;
-  margin: 0 17px 12px;
-  padding: 10px;
+  margin: 14px 20px;
+  padding: 12px;
   color: #14734f;
   background: #eafaf2;
   border: 1px solid #c8f0dc;
-  border-radius: 6px;
-  font-size: 11px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
 .driver-kyc-notice span {
   flex: 1;
+  min-width: 0;
 }
 
 .driver-kyc-notice button {
+  flex-shrink: 0;
   color: inherit;
   background: transparent;
   border: 0;
@@ -258,15 +332,20 @@
   cursor: pointer;
 }
 
-/* Table */
+/* ========================================
+   TABLE
+======================================== */
 
 .driver-kyc-table-wrap {
   width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .driver-kyc-table {
   width: 100%;
+  min-width: 620px;
   border-collapse: collapse;
   text-align: left;
   white-space: nowrap;
@@ -277,27 +356,28 @@
 }
 
 .driver-kyc-table th {
-  padding: 12px 11px;
+  padding: 14px 13px;
   color: #60748a;
   border-top: 1px solid #e2eaf2;
   border-bottom: 1px solid #e2eaf2;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 750;
 }
 
 .driver-kyc-table td {
-  padding: 12px 11px;
+  padding: 14px 13px;
   color: #394f65;
   border-bottom: 1px solid #edf1f5;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .driver-kyc-table tbody tr {
   cursor: pointer;
+  transition: background 0.15s ease;
 }
 
 .driver-kyc-table tbody tr:hover {
-  background: #fbfcfe;
+  background: #fffdf3;
 }
 
 .driver-kyc-table tbody tr.kyc-selected-row {
@@ -307,12 +387,12 @@
 .kyc-driver-name {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
   padding: 0;
   color: #243b50;
   background: transparent;
   border: 0;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -321,8 +401,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
   color: #536d87;
   background: #eaf0f7;
   border-radius: 50%;
@@ -331,7 +412,7 @@
 .kyc-document-count {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   color: #50667b;
   font-weight: 700;
 }
@@ -339,9 +420,10 @@
 .kyc-status {
   display: inline-flex;
   align-items: center;
-  padding: 5px 8px;
+  justify-content: center;
+  padding: 6px 10px;
   border-radius: 20px;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 750;
 }
 
@@ -363,7 +445,7 @@
 .kyc-row-actions {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .kyc-approve-button,
@@ -372,13 +454,14 @@
   align-items: center;
   justify-content: center;
   gap: 5px;
-  min-height: 28px;
-  padding: 6px 8px;
+  min-height: 32px;
+  padding: 7px 10px;
   border: 1px solid transparent;
-  border-radius: 5px;
-  font-size: 9px;
+  border-radius: 7px;
+  font-size: 11px;
   font-weight: 750;
   cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .kyc-approve-button {
@@ -402,7 +485,7 @@
 
 .kyc-reviewed-label {
   color: #8795a5;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .kyc-empty-state {
@@ -418,49 +501,56 @@
 
 .kyc-empty-state strong {
   color: #253b50;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .kyc-empty-state span {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .driver-kyc-table-footer {
-  padding: 14px 17px;
+  padding: 15px 20px;
   color: #8190a1;
   border-top: 1px solid #e8eef4;
-  font-size: 10px;
+  font-size: 12px;
 }
 
-/* Profile panel */
+/* ========================================
+   PROFILE PANEL
+======================================== */
 
 .driver-kyc-profile {
-  padding: 18px;
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  overflow: hidden;
 }
 
 .kyc-profile-heading {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
   margin-bottom: 17px;
 }
 
 .kyc-profile-heading h2 {
   margin: 0;
   color: #172d42;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 750;
 }
 
 .kyc-profile-heading > span {
   color: #8492a3;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .kyc-profile-person {
   display: flex;
   align-items: center;
   gap: 11px;
+  min-width: 0;
   padding-bottom: 18px;
   border-bottom: 1px solid #e9eef4;
 }
@@ -469,48 +559,58 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 49px;
-  height: 49px;
-  flex-shrink: 0;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
   color: #315c86;
   background: #e8f1fb;
   border-radius: 50%;
 }
 
+.kyc-profile-person > div:last-child {
+  min-width: 0;
+}
+
 .kyc-profile-person h3 {
   margin: 0 0 5px;
   color: #1b3349;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 750;
+  overflow-wrap: anywhere;
 }
 
 .kyc-profile-person p {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 5px;
   margin: 0;
   color: #738398;
-  font-size: 10px;
+  font-size: 11px;
+  overflow-wrap: anywhere;
 }
 
 .kyc-profile-status-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
   padding: 15px 0;
   border-bottom: 1px solid #edf1f5;
 }
 
 .kyc-profile-status-row > span:first-child {
   color: #718197;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .kyc-profile-detail {
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  min-width: 0;
   padding: 13px 0;
   border-bottom: 1px solid #edf1f5;
 }
@@ -525,40 +625,622 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .kyc-profile-detail span {
   color: #8290a2;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .kyc-profile-detail strong {
   color: #2b4157;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .kyc-profile-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
   margin-top: 17px;
 }
 
 .kyc-profile-actions button {
   width: 100%;
-  min-height: 36px;
-  font-size: 10px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  font-size: 12px;
 }
 
 .kyc-demo-note {
   margin: 15px 0 0;
   color: #8794a3;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
-/* Responsive */
+/* ========================================
+   LOADING SPINNER
+======================================== */
+
+.kyc-spin {
+  animation: kyc-spin 1s linear infinite;
+}
+
+@keyframes kyc-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.kyc-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.kyc-empty-state strong {
+  font-size: 15px;
+  color: #111827;
+}
+
+.kyc-empty-state span {
+  font-size: 13px;
+}
+
+/* ========================================
+   PROFILE META
+======================================== */
+
+.kyc-profile-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ========================================
+   DOCUMENT / VEHICLE / BANK TABS
+======================================== */
+
+.kyc-section-tabs {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  margin: 16px 0 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.kyc-section-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  gap: 6px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 10px 7px;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.kyc-section-tab svg {
+  flex-shrink: 0;
+  max-width: 16px;
+}
+
+.kyc-section-tab:hover {
+  color: #111827;
+}
+
+.kyc-section-tab.active {
+  color: #111827;
+  border-bottom-color: #f59e0b;
+}
+
+.kyc-section-tab-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: #d1d5db;
+}
+
+.kyc-sec-verified .kyc-section-tab-dot {
+  background: #10b981;
+}
+
+.kyc-sec-pending .kyc-section-tab-dot {
+  background: #f59e0b;
+}
+
+.kyc-sec-rejected .kyc-section-tab-dot {
+  background: #ef4444;
+}
+
+/* ========================================
+   SECTION BODY
+======================================== */
+
+.kyc-section-body {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 0 4px;
+}
+
+.kyc-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.kyc-status-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.kyc-status-banner svg {
+  flex-shrink: 0;
+}
+
+.kyc-status-banner.kyc-status-verified {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.kyc-status-banner.kyc-status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.kyc-status-banner.kyc-status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* ========================================
+   DOCUMENT SUMMARY CARDS
+======================================== */
+
+.kyc-doc-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.kyc-doc-stat {
+  min-width: 0;
+  padding: 12px 8px;
+  background: #f9fafb;
+  border-radius: 9px;
+  text-align: center;
+}
+
+.kyc-doc-stat-label {
+  display: block;
+  font-size: 10px;
+  color: #6b7280;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.kyc-doc-stat-value {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 4px;
+}
+
+.kyc-doc-stat-green {
+  background: #ecfdf5;
+}
+
+.kyc-doc-stat-green .kyc-doc-stat-value {
+  color: #065f46;
+}
+
+.kyc-doc-stat-amber {
+  background: #fef3c7;
+}
+
+.kyc-doc-stat-amber .kyc-doc-stat-value {
+  color: #92400e;
+}
+
+.kyc-doc-stat-red {
+  background: #fee2e2;
+}
+
+.kyc-doc-stat-red .kyc-doc-stat-value {
+  color: #991b1b;
+}
+
+/* ========================================
+   REVIEW DOCUMENTS BUTTON
+======================================== */
+
+.kyc-review-docs-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 11px 14px;
+  background: #111827;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+  overflow-wrap: anywhere;
+  transition: background 0.2s ease;
+}
+
+.kyc-review-docs-button:hover {
+  background: #1f2937;
+}
+
+.kyc-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   INFORMATION GRID
+======================================== */
+
+.kyc-info-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+}
+
+.kyc-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  min-width: 0;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.kyc-info-row span {
+  color: #6b7280;
+}
+
+.kyc-info-row strong {
+  color: #111827;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   REJECTION REASON
+======================================== */
+
+.kyc-reject-reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 9px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.kyc-reject-reason svg {
+  flex-shrink: 0;
+}
+
+/* ========================================
+   INLINE EMPTY STATE
+======================================== */
+
+.kyc-empty-inline {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  background: #f9fafb;
+  border-radius: 9px;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   SECTION ACTIONS
+======================================== */
+
+.kyc-section-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 4px;
+}
+
+.kyc-section-actions button {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   OVERALL ACTIONS
+======================================== */
+
+.kyc-overall-actions {
+  min-width: 0;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kyc-warning-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.kyc-warning-banner svg {
+  flex-shrink: 0;
+}
+
+.kyc-overall-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.kyc-approve-full {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ========================================
+   VIEW BUTTON
+======================================== */
+
+.kyc-view-button {
+  padding: 7px 13px;
+  color: #374151;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.kyc-view-button:hover {
+  background: #fff8d8;
+  border-color: #f5d34f;
+}
+
+/* ========================================
+   REJECT MODAL
+======================================== */
+
+.kyc-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.kyc-modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.kyc-modal h3 {
+  font-size: 17px;
+  margin: 0 0 6px;
+}
+
+.kyc-modal-hint {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.kyc-modal textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 11px;
+  color: #172b40;
+  background: #fff;
+  border: 1px solid #dce5ef;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kyc-modal textarea:focus,
+.kyc-modal textarea:focus-visible {
+  border-color: #f5c400 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255, 210, 26, 0.16) !important;
+}
+
+.kyc-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.kyc-modal-cancel {
+  padding: 9px 16px;
+  color: #374151;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.kyc-modal-cancel:hover {
+  background: #f9fafb;
+}
+
+.kyc-modal-confirm {
+  padding: 9px 16px;
+  color: #fff;
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.kyc-modal-confirm:hover {
+  background: #dc2626;
+}
+
+.kyc-modal-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   GLOBAL FOCUS FIX FOR THIS PAGE
+   Prevents the browser's blue input border.
+======================================== */
+
+.driver-kyc-page input:focus,
+.driver-kyc-page input:focus-visible,
+.driver-kyc-page textarea:focus,
+.driver-kyc-page textarea:focus-visible,
+.driver-kyc-page select:focus,
+.driver-kyc-page select:focus-visible {
+  outline: none !important;
+  accent-color: #f5c400;
+}
+
+.driver-kyc-page input:focus,
+.driver-kyc-page textarea:focus,
+.driver-kyc-page select:focus {
+  border-color: #f5c400;
+  box-shadow: 0 0 0 3px rgba(255, 210, 26, 0.15);
+}
+
+/* Keep the inner search field borderless.
+   Only the outer search box gets the yellow border. */
+
+.driver-kyc-page .driver-kyc-search input,
+.driver-kyc-page .driver-kyc-search input:focus,
+.driver-kyc-page .driver-kyc-search input:focus-visible {
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* ========================================
+   RESPONSIVE LAYOUT
+======================================== */
 
 @media (max-width: 1200px) {
   .driver-kyc-layout {
@@ -578,11 +1260,45 @@
   .kyc-demo-note {
     grid-column: 1 / -1;
   }
+
+  .kyc-section-tabs {
+    flex-wrap: wrap;
+  }
+
+  .kyc-section-tab {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 850px) {
+  .driver-kyc-summary {
+    gap: 12px;
+  }
+
+  .driver-kyc-layout {
+    gap: 15px;
+  }
+
+  .driver-kyc-profile {
+    padding: 16px;
+  }
+
+  .driver-kyc-tabs {
+    padding: 15px;
+  }
+
+  .driver-kyc-toolbar {
+    padding: 13px 15px;
+  }
 }
 
 @media (max-width: 700px) {
   .driver-kyc-summary {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .driver-kyc-header {
+    align-items: flex-start;
   }
 
   .driver-kyc-header h1 {
@@ -595,15 +1311,121 @@
   }
 
   .driver-kyc-tab {
-    flex: 1;
+    flex: 1 1 auto;
   }
 
   .driver-kyc-toolbar {
     padding: 12px 13px;
   }
 
+  .driver-kyc-search {
+    height: 42px;
+  }
+
+  .driver-kyc-reset {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
   .driver-kyc-profile {
     display: block;
     padding: 15px;
+  }
+
+  .kyc-section-tabs {
+    gap: 2px;
+  }
+
+  .kyc-section-tab {
+    flex: 1 1 30%;
+    padding: 10px 5px;
+    font-size: 11px;
+  }
+
+  .kyc-doc-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .driver-kyc-table th,
+  .driver-kyc-table td {
+    padding: 12px 10px;
+  }
+
+  .driver-kyc-notice {
+    margin: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .driver-kyc-header h1 {
+    font-size: 20px;
+  }
+
+  .driver-kyc-header-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .kyc-summary-card {
+    padding: 16px;
+  }
+
+  .driver-kyc-tabs {
+    gap: 6px;
+  }
+
+  .driver-kyc-tab {
+    gap: 5px;
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .driver-kyc-toolbar {
+    gap: 8px;
+    padding: 11px;
+  }
+
+  .driver-kyc-search {
+    gap: 7px;
+    padding: 0 9px;
+  }
+
+  .driver-kyc-profile {
+    padding: 13px;
+  }
+
+  .kyc-section-tab {
+    gap: 4px;
+    font-size: 10px;
+  }
+
+  .kyc-section-tab svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .kyc-doc-stat {
+    padding: 10px 6px;
+  }
+
+  .kyc-doc-stat-label {
+    font-size: 9px;
+  }
+
+  .kyc-doc-stat-value {
+    font-size: 18px;
+  }
+
+  .kyc-overall-buttons {
+    flex-direction: column;
+  }
+
+  .kyc-overall-buttons button {
+    width: 100%;
+  }
+
+  .kyc-modal {
+    padding: 16px;
   }
 }

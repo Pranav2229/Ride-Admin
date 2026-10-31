@@ -156,7 +156,7 @@ function SettingsPage() {
   );
 
   const field = (label, key, options = {}) => (
-    <label className="setting-field" key={key}>
+    <label className="settings-field" key={key}>
       <span>{label}</span>
       <input
         type={options.type || "text"}
