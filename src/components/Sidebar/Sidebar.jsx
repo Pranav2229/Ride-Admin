@@ -44,26 +44,26 @@ function Sidebar() {
       path: "/driver-documents",
       icon: Files,
     },
-    {
-      name: "Live Rides",
-      path: "/live-rides",
-      icon: Radio,
-    },
-    {
-      name: "Trip Management",
-      path: "/trip-management",
-      icon: Route,
-    },
-    {
-      name: "Revenue & Reports",
-      path: "/reports",
-      icon: ChartColumnIncreasing,
-    },
-    {
-      name: "Settings",
-      path: "/settings",
-      icon: Settings,
-    },
+    // {
+    //   name: "Live Rides",
+    //   path: "/live-rides",
+    //   icon: Radio,
+    // },
+    // {
+    //   name: "Trip Management",
+    //   path: "/trip-management",
+    //   icon: Route,
+    // },
+    // {
+    //   name: "Revenue & Reports",
+    //   path: "/reports",
+    //   icon: ChartColumnIncreasing,
+    // },
+    // {
+    //   name: "Settings",
+    //   path: "/settings",
+    //   icon: Settings,
+    // },
   ];
 
   return (
