@@ -361,7 +361,7 @@ export default function DriverKYCPage() {
   // Navigate to docs page
   const goToDocuments = () => {
     if (!selectedDriver) return;
-    navigate(`/admin/drivers/${selectedDriver.driver_id}/documents`, {
+    navigate(`/driver-documents`, {
       state: { from: "kyc" },
     });
   };
