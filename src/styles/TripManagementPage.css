@@ -1238,3 +1238,89 @@
     width: 100%;
   }
 }
+
+/* ========================================
+   SUMMARY CARD LOADING SKELETON
+======================================== */
+
+.trip-skeleton-card {
+  overflow: hidden;
+}
+
+.trip-skeleton-icon,
+.trip-skeleton-line {
+  position: relative;
+  overflow: hidden;
+  background: #edf1f6;
+}
+
+.trip-skeleton-icon {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.trip-skeleton-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.trip-skeleton-line {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.trip-skeleton-label {
+  width: 75%;
+}
+
+.trip-skeleton-value {
+  width: 45%;
+  height: 24px;
+}
+
+.trip-skeleton-description {
+  width: 90%;
+  height: 8px;
+}
+
+.trip-skeleton-icon::after,
+.trip-skeleton-line::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: trip-skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes trip-skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 520px) {
+  .trip-skeleton-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .trip-skeleton-content {
+    gap: 7px;
+  }
+
+  .trip-skeleton-value {
+    height: 21px;
+  }
+}

@@ -1471,3 +1471,89 @@
     padding-left: 12px;
   }
 }
+
+/* =========================================
+   SUMMARY CARD LOADING SKELETON
+========================================= */
+
+.lr-skeleton-card {
+  overflow: hidden;
+}
+
+.lr-skeleton-icon,
+.lr-skeleton-line {
+  position: relative;
+  overflow: hidden;
+  background: #edf1f6;
+}
+
+.lr-skeleton-icon {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.lr-skeleton-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.lr-skeleton-line {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.lr-skeleton-label {
+  width: 75%;
+}
+
+.lr-skeleton-value {
+  width: 45%;
+  height: 24px;
+}
+
+.lr-skeleton-description {
+  width: 90%;
+  height: 8px;
+}
+
+.lr-skeleton-icon::after,
+.lr-skeleton-line::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+  animation: lr-skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes lr-skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 520px) {
+  .lr-skeleton-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .lr-skeleton-content {
+    gap: 7px;
+  }
+
+  .lr-skeleton-value {
+    height: 21px;
+  }
+}
